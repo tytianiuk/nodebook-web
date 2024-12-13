@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 
 import Footer from '@/components/footer/footer'
 import Header from '@/components/header/header'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 
@@ -24,11 +25,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ua'>
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
+      <body
+        className={`${inter.className} antialiased min-h-screen flex flex-col `}
+      >
         <Header />
-        <main className='flex-grow container mx-auto px-4 py-8'>
+        <main className='flex-grow max-w-screen-2xl w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8'>
           {children}
         </main>
+        <Toaster />
         <Footer />
       </body>
     </html>
