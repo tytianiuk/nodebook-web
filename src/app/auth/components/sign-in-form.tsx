@@ -1,10 +1,14 @@
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import { LoginFormValues, signInDefaultValues } from '../constants'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
+import Routes from '@/constants/routes'
+import useUserStore from '@/hooks/store/use-user-store'
+import { toast } from '@/hooks/use-toast'
+import { User } from '@/types/user'
 const SignInForm = () => {
   const {
     register,
@@ -14,12 +18,28 @@ const SignInForm = () => {
   } = useForm<LoginFormValues>({
     defaultValues: signInDefaultValues,
   })
-  const allFields = watch()
+  const { replace } = useRouter()
+  const { setUser } = useUserStore((state) => state)
 
+  const allFields = watch()
   const allFieldsFilled = Object.values(allFields).every((value) => value)
 
   const handleLogin = async (data: LoginFormValues) => {
-    console.log(data)
+    try {
+      const mockUser: User = {
+        id: 1,
+        email: data.email,
+        username: data.email.split('@')[0],
+      }
+      setUser(mockUser)
+      replace(Routes.CATALOG)
+    } catch {
+      toast({
+        title: 'Помилка при вході',
+        description: 'Перевірте правильність введених даних',
+        variant: 'destructive',
+      })
+    }
   }
 
   return (

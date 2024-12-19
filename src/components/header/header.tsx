@@ -3,7 +3,8 @@ import Link from 'next/link'
 
 import Navigation from './navigation'
 
-import { Button } from '@/components/ui/button'
+import ProfileButton from '@/components/header/profile-button'
+
 const Header = () => {
   return (
     <header className='bg-white shadow-sm'>
@@ -20,13 +21,12 @@ const Header = () => {
           </div>
           <div className='flex gap-8'>
             <Navigation />
-            <Link className='hidden sm:block' href='/auth'>
-              <Button>Увійти</Button>
-            </Link>
+            <ProfileButton className='hidden sm:flex' />
           </div>
         </div>
       </div>
     </header>
   )
 }
+
 export default Header
