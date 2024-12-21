@@ -5,7 +5,7 @@ export enum Genres {
   Thriller = 'Триллер',
   SelfHelp = 'Самопоміч',
   Science = 'Наука',
-  Fiction = 'Художня Література',
+  Fiction = 'Художня література',
   ScienceFiction = 'Наукова фантастика',
   Classic = 'Класика',
   Biography = 'Біографія',
