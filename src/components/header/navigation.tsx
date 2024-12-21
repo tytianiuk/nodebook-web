@@ -26,6 +26,7 @@ const Navigation: FC = () => {
             href={item.href}
             className={`flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 mb-4 sm:mb-0`}
             onClick={() => setIsOpen(false)}
+            data-testid={item.name}
           >
             <item.icon className='h-5 w-5' />
             <span>{item.name}</span>
