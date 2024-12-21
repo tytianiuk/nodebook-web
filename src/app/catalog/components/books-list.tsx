@@ -20,7 +20,7 @@ const BooksList: FC<BooksListProps> = ({ filters }) => {
     },
   })
 
-  if (books.length === 0) {
+  if (!books || books.length === 0) {
     return <p className='text-lg font-medium'>Книг не знайдено</p>
   }
 
