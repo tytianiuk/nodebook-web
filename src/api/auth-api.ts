@@ -1,6 +1,5 @@
 class AuthAPI {
   async register(email: string, username: string, password: string) {
-    console.log({ email, password, username })
     try {
       const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + '/auth/signup',
@@ -15,7 +14,10 @@ class AuthAPI {
       )
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const error: any = new Error(`Error status: ${response.status}`)
+        error.status = response.status
+        throw error
       }
 
       return await response.json()
@@ -35,17 +37,18 @@ class AuthAPI {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ username, password }),
+          credentials: 'include',
         },
       )
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const error: any = new Error(`Error status: ${response.status}`)
+        error.status = response.status
+        throw error
       }
-      const data = await response.json()
-      console.log('Login')
-      return data
+      return await response.json()
     } catch (error) {
-      console.error('Error during login:', error)
       throw error
     }
   }
@@ -59,22 +62,21 @@ class AuthAPI {
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include',
         },
       )
 
       if (!response.ok) {
-        if (response.status === 401) {
+        if (response.status === 403) {
           return null
         }
-        throw new Error(`HTTP error! status: ${response.status}`)
       }
-
       return await response.json()
     } catch (error) {
-      console.error('Error fetching user data:', error)
       throw error
     }
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new AuthAPI()

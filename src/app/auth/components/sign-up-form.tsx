@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -7,10 +8,16 @@ import {
   registerSchema,
 } from '../constants'
 
+import AuthAPI from '@/api/auth-api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import errorMessages from '@/constants/error-messages'
+import Routes from '@/constants/routes'
+import useUserStore from '@/hooks/store/use-user-store'
+import { useToast } from '@/hooks/use-toast'
 
 const SignUpForm = () => {
+  const { replace } = useRouter()
   const {
     register,
     handleSubmit,
@@ -20,12 +27,39 @@ const SignUpForm = () => {
     resolver: zodResolver(registerSchema),
     defaultValues: signUpDefaultValues,
   })
+  const { setUser } = useUserStore((state) => state)
+  const { toast } = useToast()
 
   const allFields = watch()
 
   const allFieldsFilled = Object.values(allFields).every((value) => value)
 
-  const handleRegister = async (data: RegisterFormValues) => console.log(data)
+  const handleRegister = async (data: RegisterFormValues) => {
+    const { username, password, email } = data
+    try {
+      const res = await AuthAPI.register(username, email, password)
+
+      if (res.status === 201) {
+        await AuthAPI.login(email, password)
+        const user = await AuthAPI.getMe()
+        setUser(user)
+        replace(Routes.CATALOG)
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const { title, description } = errorMessages[error?.status] || {
+        title: 'Помилка при створенні аккаунту',
+        description:
+          error.message || 'Сталася невідома помилка. Спробуйте пізніше.',
+      }
+
+      toast({
+        title,
+        description,
+        variant: 'destructive',
+      })
+    }
+  }
 
   return (
     <form
@@ -35,7 +69,7 @@ const SignUpForm = () => {
     >
       <Input
         label="Ім'я"
-        id='fullName'
+        id='username'
         placeholder='Іван Петренко'
         error={errors.username?.message}
         required

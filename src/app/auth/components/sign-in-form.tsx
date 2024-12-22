@@ -3,13 +3,18 @@ import { useForm } from 'react-hook-form'
 
 import { LoginFormValues, signInDefaultValues } from '../constants'
 
+import AuthAPI from '@/api/auth-api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import errorMessages from '@/constants/error-messages'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
-import { toast } from '@/hooks/use-toast'
-import { User } from '@/types/user'
+import { useToast } from '@/hooks/use-toast'
+
 const SignInForm = () => {
+  const { toast } = useToast()
+  const { setUser } = useUserStore((state) => state)
+  const { replace } = useRouter()
   const {
     register,
     handleSubmit,
@@ -18,25 +23,29 @@ const SignInForm = () => {
   } = useForm<LoginFormValues>({
     defaultValues: signInDefaultValues,
   })
-  const { replace } = useRouter()
-  const { setUser } = useUserStore((state) => state)
 
   const allFields = watch()
+
   const allFieldsFilled = Object.values(allFields).every((value) => value)
 
   const handleLogin = async (data: LoginFormValues) => {
+    const { email, password } = data
+
     try {
-      const mockUser: User = {
-        id: 1,
-        email: data.email,
-        username: data.email.split('@')[0],
-      }
-      setUser(mockUser)
+      await AuthAPI.login(email, password)
+      const user = await AuthAPI.getMe()
+      setUser(user)
       replace(Routes.CATALOG)
-    } catch {
-      toast({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const { title, description } = errorMessages[error.status] || {
         title: 'Помилка при вході',
-        description: 'Перевірте правильність введених даних',
+        description: 'Сталася невідома помилка. Спробуйте пізніше.',
+      }
+
+      toast({
+        title,
+        description,
         variant: 'destructive',
       })
     }
