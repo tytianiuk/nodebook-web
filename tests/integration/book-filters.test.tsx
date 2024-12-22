@@ -3,11 +3,11 @@ import React from 'react'
 
 import BooksFilters from '@/app/catalog/components/book-filters'
 
-jest.mock('@/app/catalog/components/book-genre-selector', () => {
+jest.mock('@/app/catalog/components/book-category-selector', () => {
   const Mock = () => (
-    <div data-testid='books-genre-selector'>BooksGenreSelector Mock</div>
+    <div data-testid='books-category-selector'>BooksCategorySelector Mock</div>
   )
-  Mock.displayName = 'BooksGenreSelector'
+  Mock.displayName = 'BooksCategorySelector'
   return Mock
 })
 jest.mock('@/app/catalog/components/books-rating-select', () => {
@@ -53,11 +53,13 @@ describe('BooksFilters', () => {
     expect(booksSearch).toHaveTextContent('BooksSearch Mock')
   })
 
-  it('renders BooksGenreSelector component', () => {
+  it('renders BooksCategorySelector component', () => {
     render(<BooksFilters />)
-    const booksGenreSelector = screen.getByTestId('books-genre-selector')
-    expect(booksGenreSelector).toBeInTheDocument()
-    expect(booksGenreSelector).toHaveTextContent('BooksGenreSelector Mock')
+    const booksCategorySelector = screen.getByTestId('books-category-selector')
+    expect(booksCategorySelector).toBeInTheDocument()
+    expect(booksCategorySelector).toHaveTextContent(
+      'BooksCategorySelector Mock',
+    )
   })
 
   it('renders BooksRatingSelect component', () => {
@@ -76,7 +78,7 @@ describe('BooksFilters', () => {
 
     expect(childElements.map((el) => el.getAttribute('data-testid'))).toEqual([
       'books-search',
-      'books-genre-selector',
+      'books-category-selector',
       'books-rating-select',
     ])
   })

@@ -1,4 +1,4 @@
-export enum Genres {
+export enum Categories {
   Adventure = 'Пригоди',
   Fantasy = 'Фентезі',
   Psychological = 'Психологічний',

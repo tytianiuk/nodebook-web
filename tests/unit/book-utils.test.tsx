@@ -5,30 +5,33 @@ import { filterBooks } from '@/utils/book-utils'
 
 const books: Book[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Книга 1',
-    genres: 'Художня література',
-    rating: 4,
     author: 'Автор 1',
-    releaseDate: new Date().toDateString(),
+    category: 'Художня література',
+    pageQuantity: 1,
+    averageRating: 4,
+    reviews: [],
     comments: [],
   },
   {
-    id: 2,
+    id: '2',
     name: 'Книга 2',
-    genres: 'Наукова фантастика',
-    rating: 5,
     author: 'Автор 2',
-    releaseDate: new Date().toDateString(),
+    category: 'Наукова фантастика',
+    pageQuantity: 2,
+    averageRating: 5,
+    reviews: [],
     comments: [],
   },
   {
-    id: 3,
+    id: '3',
     name: 'Книга 3',
-    genres: 'Художня література',
-    rating: 3,
     author: 'Автор 3',
-    releaseDate: new Date().toDateString(),
+    category: 'Художня література',
+    pageQuantity: 3,
+    averageRating: 3,
+    reviews: [],
     comments: [],
   },
 ]
@@ -47,8 +50,8 @@ describe('Books Utils - Unit tests', () => {
       expect(filteredBooks).toEqual([books[1]])
     })
 
-    it('should filter books by genre', () => {
-      const filters: Filters = { genre: 'Художня література' }
+    it('should filter books by category', () => {
+      const filters: Filters = { category: 'Художня література' }
       const filteredBooks = filterBooks(books, filters)
       expect(filteredBooks).toEqual([books[0], books[2]])
     })
@@ -77,9 +80,9 @@ describe('Books Utils - Unit tests', () => {
       expect(filteredBooks).toEqual([books[0]])
     })
 
-    it('should combine filters (genre and rating)', () => {
+    it('should combine filters (category and rating)', () => {
       const filters: Filters = {
-        genre: 'Художня література',
+        category: 'Художня література',
         minRating: 4,
       }
       const filteredBooks = filterBooks(books, filters)
@@ -89,7 +92,7 @@ describe('Books Utils - Unit tests', () => {
     it('should handle undefined filter values', () => {
       const filters: Filters = {
         search: undefined,
-        genre: undefined,
+        category: undefined,
         minRating: undefined,
       }
       const filteredBooks = filterBooks(books, filters)
@@ -97,7 +100,7 @@ describe('Books Utils - Unit tests', () => {
     })
 
     it('should handle empty strings in filters', () => {
-      const filters: Filters = { search: '', genre: '', minRating: 0 }
+      const filters: Filters = { search: '', category: '', minRating: 0 }
       const filteredBooks = filterBooks(books, filters)
       expect(filteredBooks).toEqual(books)
     })

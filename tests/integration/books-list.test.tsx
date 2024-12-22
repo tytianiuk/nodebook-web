@@ -17,29 +17,32 @@ jest.mock('@/app/catalog/components/book-card', () => ({
 describe('BooksList', () => {
   const mockBooks = [
     {
-      id: 1,
+      id: '1',
       name: 'Книга 1',
-      genres: 'Художня література',
-      rating: 4,
       author: 'Автор 1',
+      category: 'Художня література',
+      pageQuantity: 1,
+      averageRating: 4,
     },
     {
-      id: 2,
+      id: '2',
       name: 'Книга 2',
-      genres: 'Наукова фантастика',
-      rating: 5,
       author: 'Автор 2',
+      category: 'Наукова фантастика',
+      pageQuantity: 2,
+      averageRating: 5,
     },
     {
       id: 3,
       name: 'Книга 3',
-      genres: 'Художня література',
-      rating: 3.5,
       author: 'Автор 3',
+      category: 'Художня література',
+      pageQuantity: 3,
+      averageRating: 3.5,
     },
   ]
 
-  const filters: Filters = { search: 'Книга', genre: '', minRating: 0 }
+  const filters: Filters = { search: 'Книга', category: '', minRating: 0 }
 
   beforeEach(() => {
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -60,7 +63,7 @@ describe('BooksList', () => {
   it('should render the "no books found" message when no books match the filters', async () => {
     const noResultsFilters: Filters = {
       search: 'Nonexistent',
-      genre: '',
+      category: '',
       minRating: 0,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({ data: [] })
@@ -73,7 +76,11 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (name)', async () => {
-    const searchFilter: Filters = { search: 'Книга 1', genre: '', minRating: 0 }
+    const searchFilter: Filters = {
+      search: 'Книга 1',
+      category: '',
+      minRating: 0,
+    }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
       data: [mockBooks[0]],
     })
@@ -88,7 +95,11 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (author)', async () => {
-    const searchFilter: Filters = { search: 'Автор 2', genre: '', minRating: 0 }
+    const searchFilter: Filters = {
+      search: 'Автор 2',
+      category: '',
+      minRating: 0,
+    }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
       data: [mockBooks[1]],
     })
@@ -102,10 +113,10 @@ describe('BooksList', () => {
     })
   })
 
-  it('should display filtered books based on the provided filters (genre)', async () => {
+  it('should display filtered books based on the provided filters (category)', async () => {
     const searchFilter: Filters = {
       search: '',
-      genre: 'Художня література',
+      category: 'Художня література',
       minRating: 0,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -124,7 +135,7 @@ describe('BooksList', () => {
   it('should display filtered books based on the provided filters (minRating)', async () => {
     const searchFilter: Filters = {
       search: '',
-      genre: '',
+      category: '',
       minRating: 4,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -140,10 +151,10 @@ describe('BooksList', () => {
     })
   })
 
-  it('should display filtered books based on the provided filters (genre & minRating)', async () => {
+  it('should display filtered books based on the provided filters (category & minRating)', async () => {
     const searchFilter: Filters = {
       search: '',
-      genre: 'Художня література',
+      category: 'Художня література',
       minRating: 4,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -162,7 +173,7 @@ describe('BooksList', () => {
   it('should display filtered books based on the provided filters (all)', async () => {
     const searchFilter: Filters = {
       search: '3',
-      genre: 'Художня література',
+      category: 'Художня література',
       minRating: 3,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({

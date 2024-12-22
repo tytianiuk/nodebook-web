@@ -1,4 +1,4 @@
-import BooksGenreSelector from '@/app/catalog/components/book-genre-selector'
+import BooksCategorySelector from '@/app/catalog/components/book-category-selector'
 import BooksRatingSelect from '@/app/catalog/components/books-rating-select'
 import BooksSearch from '@/app/catalog/components/books-search'
 
@@ -12,7 +12,7 @@ const BooksFilters = () => {
         <h2 className='text-xl font-semibold mb-4'>Фільтри</h2>
         <div className='space-y-4'>
           <BooksSearch />
-          <BooksGenreSelector />
+          <BooksCategorySelector />
           <BooksRatingSelect />
         </div>
       </div>

@@ -34,10 +34,10 @@ const BookCard: FC<BookCardProps> = ({ book }) => {
       </CardHeader>
       <CardContent>
         <p className='text-sm text-gray-500'>{book.author}</p>
-        <p className='text-sm text-gray-500' data-testid='genre'>
-          {book.genres}
+        <p className='text-sm text-gray-500' data-testid='category'>
+          {book.category}
         </p>
-        <BookRating rating={book.rating} />
+        <BookRating rating={book.averageRating} />
       </CardContent>
       <CardFooter className='flex gap-2 flex-wrap'>
         <Link href={`/${book.id}`}>

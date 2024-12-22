@@ -1,21 +1,20 @@
 import { Comment } from '@/types/comment'
+import { Review } from '@/types/review'
 
 export type Book = {
-  id: number
+  id: string
   name: string
   description?: string
-  format?: string
   author: string
-  publisher?: string
-  genres: string
-  releaseDate: string
-  rating: number
-  image?: string
+  category: string
+  pageQuantity: number
+  averageRating: number
   comments: Comment[]
+  reviews: Review[]
 }
 
 export interface Filters {
   search?: string
-  genre?: string
+  category?: string
   minRating?: number
 }

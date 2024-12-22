@@ -10,12 +10,13 @@ jest.mock('next/router', () => ({
 
 describe('BookCard Component', () => {
   const book: Book = {
-    id: 1,
+    id: '1',
     name: 'Тестова Книга',
-    genres: 'Художня література',
-    rating: 4.5,
     author: 'Тестовий Автор',
-    releaseDate: new Date().toDateString(),
+    category: 'Художня література',
+    pageQuantity: 1,
+    averageRating: 4.5,
+    reviews: [],
     comments: [],
   }
 
@@ -28,7 +29,9 @@ describe('BookCard Component', () => {
 
     expect(screen.getByTestId('title')).toHaveTextContent('Тестова Книга')
     expect(screen.getByText('Тестовий Автор')).toBeInTheDocument()
-    expect(screen.getByTestId('genre')).toHaveTextContent('Художня література')
+    expect(screen.getByTestId('category')).toHaveTextContent(
+      'Художня література',
+    )
     expect(screen.getByTestId('rating')).toHaveTextContent('4.5')
 
     const image = screen.getByAltText('Тестова Книга')
