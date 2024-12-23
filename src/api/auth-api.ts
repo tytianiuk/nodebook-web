@@ -66,10 +66,8 @@ class AuthAPI {
         },
       )
 
-      if (!response.ok) {
-        if (response.status === 403) {
-          return null
-        }
+      if (response.status === 401) {
+        return null
       }
       return await response.json()
     } catch (error) {
