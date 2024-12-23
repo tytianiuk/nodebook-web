@@ -7,15 +7,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { FormValues, FormValuesSchema } from '../constants'
 
+import AuthDialog from './auth-dialog'
+
 import ContactsAPI from '@/api/contacts-api'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import Routes from '@/constants/routes'
@@ -123,25 +118,11 @@ const ContactsForm = () => {
         </Button>
       </form>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Увійдіть або створіть обліковий запис</DialogTitle>
-            <DialogDescription>
-              Для відправки повідомлення необхідно увійти або створити обліковий
-              запис.
-            </DialogDescription>
-          </DialogHeader>
-          <div className='flex justify-end space-x-4 mt-4'>
-            <Button variant='outline' onClick={handleCloseDialog}>
-              Увійти
-            </Button>
-            <Button onClick={handleCloseDialog}>
-              Створити обліковий запис
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AuthDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onClose={handleCloseDialog}
+      />
     </>
   )
 }
