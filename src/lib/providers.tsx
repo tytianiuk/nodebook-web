@@ -1,20 +1,33 @@
 'use client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import { FC, PropsWithChildren } from 'react'
+import { FC, PropsWithChildren, useEffect } from 'react'
 
+import AuthAPI from '@/api/auth-api'
 import { Toaster } from '@/components/ui/toaster'
-
-const queryClient = new QueryClient()
+import useUserStore from '@/hooks/store/use-user-store'
 
 const Providers: FC<PropsWithChildren> = ({ children }) => {
+  const { user, setUser, setLoading } = useUserStore((state) => state)
+
+  useEffect(() => {
+    if (user === null) {
+      setLoading(true)
+      AuthAPI.getMe()
+        .then((response) => {
+          setUser(response)
+          setLoading(false)
+        })
+        .catch(() => {
+          setLoading(false)
+        })
+    }
+  }, [user])
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <NuqsAdapter>
-        {children}
-        <Toaster />
-      </NuqsAdapter>
-    </QueryClientProvider>
+    <NuqsAdapter>
+      {children}
+      <Toaster />
+    </NuqsAdapter>
   )
 }
 
