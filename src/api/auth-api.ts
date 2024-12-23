@@ -1,5 +1,5 @@
 class AuthAPI {
-  async register(email: string, username: string, password: string) {
+  async register(username: string, email: string, password: string) {
     try {
       const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + '/auth/signup',
@@ -20,14 +20,14 @@ class AuthAPI {
         throw error
       }
 
-      return await response.json()
+      return response
     } catch (error) {
       console.error('Error during registration:', error)
       throw error
     }
   }
 
-  async login(username: string, password: string) {
+  async login(email: string, password: string) {
     try {
       const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + '/auth/login',
@@ -36,7 +36,7 @@ class AuthAPI {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ email, password }),
           credentials: 'include',
         },
       )
