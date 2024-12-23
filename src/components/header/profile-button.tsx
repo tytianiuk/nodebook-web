@@ -6,8 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
+import { cn } from '@/utils/style-utils'
 import { getNameAbbreviation } from '@/utils/user-utils'
-import { cn } from '@/utils/utils'
 interface ProfileButtonProps {
   className?: string
 }
