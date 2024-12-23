@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { FormValues, FormValuesSchema } from '../constants'
 
+import ContactsAPI from '@/api/contacts-api'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,14 +37,15 @@ const ContactsForm = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit: SubmitHandler<FormValues> = async () => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     if (!user) {
       setIsDialogOpen(true)
       return
     }
-
     setIsSubmitting(true)
+    const { subject, message } = data
     try {
+      await ContactsAPI.sendMessage(subject, message)
       toast({
         title: 'Успішно відправлено!',
         description: 'Ваше повідомлення було успішно відправлено.',
