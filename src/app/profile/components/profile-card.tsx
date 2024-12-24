@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 
 import ProfileDialog from './profile-dialog'
 
+import profileAPI from '@/api/profile-api'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,13 +18,29 @@ import {
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import Routes from '@/constants/routes'
+import { useToast } from '@/hooks/use-toast'
 import { User } from '@/types/user'
 import { getNameAbbreviation } from '@/utils/user-utils'
 
 const ProfileCard = ({ user }: { user: User }) => {
   const nameAbbreviation = getNameAbbreviation(user?.username || '')
   const { replace } = useRouter()
+  const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
+
+  const logout = async () => {
+    try {
+      await profileAPI.logout()
+      setIsDialogOpen(false)
+      replace(Routes.CATALOG)
+    } catch {
+      toast({
+        title: 'Помилка!',
+        description: 'Не вдалось вийти з профілю. Повторіть спробу ще раз.',
+        variant: 'destructive',
+      })
+    }
+  }
   return (
     <>
       <Card className='w-full lg:w-1/3 h-fit'>
@@ -64,10 +81,7 @@ const ProfileCard = ({ user }: { user: User }) => {
       <ProfileDialog
         isOpen={isDialogOpen}
         onOpenChange={(value) => setIsDialogOpen(value)}
-        onConfirm={async () => {
-          setIsDialogOpen(false)
-          replace(Routes.CATALOG)
-        }}
+        onConfirm={logout}
       />
     </>
   )

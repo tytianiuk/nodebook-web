@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { PasswordData, passwordFormSchema } from '../constants'
 
+import profileAPI from '@/api/profile-api'
 import {
   AccordionContent,
   AccordionItem,
@@ -33,17 +34,18 @@ const SecurityForm = () => {
     allFields && Object.values(allFields).every((value) => value)
 
   const onSubmit: SubmitHandler<PasswordData> = async (data: PasswordData) => {
-    console.log(data)
+    const { newPassword } = data
     try {
+      await profileAPI.changePassword(newPassword)
       toast({
-        title: 'Успішно',
-        description: 'Ваш пароль було змінено!',
+        title: 'Успішно!',
+        description: 'Ваш пароль було змінено.',
         variant: 'default',
       })
       reset()
     } catch {
       toast({
-        title: 'Помилка',
+        title: 'Помилка!',
         description: 'Не вдалося змінити пароль. Спробуйте ще раз.',
         variant: 'destructive',
       })

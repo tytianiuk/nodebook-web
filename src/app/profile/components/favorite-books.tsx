@@ -2,22 +2,23 @@
 
 import { useState, useEffect } from 'react'
 
+import profileAPI from '@/api/profile-api'
 import BookCard from '@/app/catalog/components/book-card'
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { catalog } from '@/mock/data/books'
 import { Book } from '@/types/book'
 
 const FavoriteBooks = () => {
   const [favoriteBooks, setFavoriteBooks] = useState<Book[]>([])
-
   useEffect(() => {
     const getFavoriteBooks = async () => {
-      const books = catalog
-      setFavoriteBooks(books)
+      try {
+        const books = await profileAPI.getLikedBooks()
+        setFavoriteBooks(books)
+      } catch {}
     }
     getFavoriteBooks()
   }, [])
@@ -26,10 +27,12 @@ const FavoriteBooks = () => {
     <AccordionItem value='favorite-books' className='px-2'>
       <AccordionTrigger>Вподобані книжки</AccordionTrigger>
       <AccordionContent>
-        <div className='max-h-[600px] overflow-y-auto pr-4'>
+        <div className='max-h-[600px]  overflow-y-auto pr-4'>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
-            {favoriteBooks.map((book) => (
-              <BookCard book={book} key={book.id} />
+            {favoriteBooks.map((book, index) => (
+              <div className='h-4/5' key={index}>
+                <BookCard book={book} />
+              </div>
             ))}
           </div>
         </div>
