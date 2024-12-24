@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import Routes from '@/constants/routes'
+import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
 import { User } from '@/types/user'
 import { getNameAbbreviation } from '@/utils/user-utils'
@@ -25,6 +26,7 @@ import { getNameAbbreviation } from '@/utils/user-utils'
 const ProfileCard = ({ user }: { user: User }) => {
   const nameAbbreviation = getNameAbbreviation(user?.username || '')
   const { replace } = useRouter()
+  const { setUser } = useUserStore((state) => state)
   const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
@@ -32,6 +34,7 @@ const ProfileCard = ({ user }: { user: User }) => {
     try {
       await profileAPI.logout()
       setIsDialogOpen(false)
+      setUser(null)
       replace(Routes.CATALOG)
     } catch {
       toast({
