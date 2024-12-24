@@ -189,9 +189,9 @@ describe('BooksList', () => {
     })
   })
 
-  it('should handle loading state if books data is not available', async () => {
+  it('should handle empty book array', async () => {
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
-      data: null,
+      data: [],
     })
 
     render(<BooksList filters={filters} />)

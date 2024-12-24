@@ -3,18 +3,21 @@ import { useRouter } from 'next/router'
 
 import BookCard from '@/app/catalog/components/book-card'
 import { Book } from '@/types/book'
+import { Category } from '@/types/categories'
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }))
 
 describe('BookCard Component', () => {
+  const category: Category = { _id: '1', name: 'Художня література' }
+
   const book: Book = {
-    id: '1',
+    _id: '1',
     name: 'Тестова Книга',
-    author: 'Тестовий Автор',
-    category: 'Художня література',
     pageQuantity: 1,
+    author: 'Тестовий Автор',
+    categoryId: category,
     averageRating: 4.5,
     reviews: [],
     comments: [],
@@ -62,6 +65,6 @@ describe('BookCard Component', () => {
     render(<BookCard book={book} />)
 
     const detailsLink = screen.getByRole('link', { name: /Детальніше/i })
-    expect(detailsLink).toHaveAttribute('href', `/${book.id}`)
+    expect(detailsLink).toHaveAttribute('href', `/${book._id}`)
   })
 })

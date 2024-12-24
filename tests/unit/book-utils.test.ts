@@ -1,35 +1,42 @@
 import { describe, it, expect } from '@jest/globals'
 
 import { Book, Filters } from '@/types/book'
+import { Category } from '@/types/categories'
 import { filterBooks } from '@/utils/book-utils'
+
+const categories: Category[] = [
+  { _id: '1', name: 'Пригоди' },
+  { _id: '2', name: 'Фентезі' },
+  { _id: '3', name: 'Художня література' },
+]
 
 const books: Book[] = [
   {
-    id: '1',
+    _id: '1',
     name: 'Книга 1',
-    author: 'Автор 1',
-    category: 'Художня література',
     pageQuantity: 1,
+    author: 'Автор 1',
+    categoryId: categories[2],
     averageRating: 4,
     reviews: [],
     comments: [],
   },
   {
-    id: '2',
+    _id: '2',
     name: 'Книга 2',
-    author: 'Автор 2',
-    category: 'Наукова фантастика',
     pageQuantity: 2,
+    author: 'Автор 2',
+    categoryId: categories[0],
     averageRating: 5,
     reviews: [],
     comments: [],
   },
   {
-    id: '3',
+    _id: '3',
     name: 'Книга 3',
-    author: 'Автор 3',
-    category: 'Художня література',
     pageQuantity: 3,
+    author: 'Автор 3',
+    categoryId: categories[2],
     averageRating: 3,
     reviews: [],
     comments: [],
@@ -51,7 +58,7 @@ describe('Books Utils - Unit tests', () => {
     })
 
     it('should filter books by category', () => {
-      const filters: Filters = { category: 'Художня література' }
+      const filters: Filters = { category: '3' }
       const filteredBooks = filterBooks(books, filters)
       expect(filteredBooks).toEqual([books[0], books[2]])
     })
@@ -82,7 +89,7 @@ describe('Books Utils - Unit tests', () => {
 
     it('should combine filters (category and rating)', () => {
       const filters: Filters = {
-        category: 'Художня література',
+        category: '3',
         minRating: 4,
       }
       const filteredBooks = filterBooks(books, filters)

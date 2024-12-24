@@ -7,9 +7,7 @@ export const filterBooks = (books: Book[], filters: Filters): Book[] => {
         book.author
           .toLowerCase()
           .includes(filters.search?.toLowerCase() ?? '')) &&
-      book.category
-        .toLowerCase()
-        .includes(filters.category?.toLowerCase() ?? '') &&
+      (filters.category ? book.categoryId._id === filters.category : true) &&
       book.averageRating >= (filters.minRating ?? 0)
     )
   })

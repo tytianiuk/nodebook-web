@@ -1,6 +1,8 @@
+import { User } from '@/types/user'
+
 export type Review = {
-  id: string
-  userName: string
+  _id: string
+  userId: User
   rating: number
   comment: string
 }
