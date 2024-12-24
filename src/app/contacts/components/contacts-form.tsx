@@ -1,37 +1,52 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { FormValues, FormValuesSchema } from '../constants'
 
+import AuthDialog from './auth-dialog'
+
+import ContactsAPI from '@/api/contacts-api'
 import { Button } from '@/components/ui/button'
-import { formItems } from '@/constants/form-items'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import Routes from '@/constants/routes'
+import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
 
 const ContactsForm = () => {
   const { toast } = useToast()
+  const { replace } = useRouter()
+  const { user } = useUserStore((state) => state)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<FormValues>({
     resolver: zodResolver(FormValuesSchema),
     defaultValues: FormValues,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit: SubmitHandler<FormValues> = async () => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    if (!user) {
+      setIsDialogOpen(true)
+      return
+    }
     setIsSubmitting(true)
+    const { subject, message } = data
     try {
+      await ContactsAPI.sendMessage(subject, message)
       toast({
         title: 'Успішно відправлено!',
         description: 'Ваше повідомлення було успішно відправлено.',
         variant: 'default',
       })
-      reset()
+      replace(Routes.CATALOG)
     } catch {
       toast({
         title: 'Помилка!',
@@ -44,39 +59,71 @@ const ContactsForm = () => {
     }
   }
 
+  const handleInputFocus = () => {
+    if (!user) {
+      setIsDialogOpen(true)
+    }
+  }
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false)
+    replace(Routes.AUTH)
+  }
+
   return (
-    <form
-      className='w-full space-y-6'
-      role='form'
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      {formItems.map(({ id, label, component: Component, ...props }) => {
-        return (
-          <div key={id}>
-            <label htmlFor={id} className='block mb-2 text-sm font-medium'>
-              {label}
-            </label>
-            <Component
-              id={id}
-              {...register(id as keyof FormValues, {})}
-              {...props}
-            />
-            {errors[id as keyof FormValues] && (
-              <p className='mt-1 text-sm text-red-600'>
-                {errors[id as keyof FormValues]?.message}
-              </p>
-            )}
-          </div>
-        )
-      })}
-      <Button
-        type='submit'
-        className='w-full bg-black text-white hover:bg-gray-800'
-        disabled={isSubmitting}
+    <>
+      <form
+        className='w-full space-y-6'
+        role='form'
+        onSubmit={handleSubmit(onSubmit)}
       >
-        {isSubmitting ? 'Відправляється...' : 'Відправити'}
-      </Button>
-    </form>
+        <div>
+          <label htmlFor='subject' className='block mb-2 text-sm font-medium'>
+            Тема
+          </label>
+          <Input
+            id='subject'
+            {...register('subject')}
+            placeholder='Введіть тему повідомлення'
+            onFocus={handleInputFocus}
+          />
+          {errors.subject && (
+            <p className='mt-1 text-sm text-red-600'>
+              {errors.subject.message}
+            </p>
+          )}
+        </div>
+        <div>
+          <label htmlFor='message' className='block mb-2 text-sm font-medium'>
+            Повідомлення
+          </label>
+          <Textarea
+            id='message'
+            {...register('message')}
+            placeholder='Введіть ваше повідомлення'
+            onFocus={handleInputFocus}
+          />
+          {errors.message && (
+            <p className='mt-1 text-sm text-red-600'>
+              {errors.message.message}
+            </p>
+          )}
+        </div>
+        <Button
+          type='submit'
+          className='w-full bg-black text-white hover:bg-gray-800'
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Відправляється...' : 'Відправити'}
+        </Button>
+      </form>
+
+      <AuthDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onClose={handleCloseDialog}
+      />
+    </>
   )
 }
 
