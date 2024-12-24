@@ -1,10 +1,1 @@
-COMMIT_MSG_FILE=$1
-COMMIT_MSG=$(cat $COMMIT_MSG_FILE)
-
-REGEX="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert): ."
-
-if [[ ! $COMMIT_MSG =~ $REGEX ]]; then
-  echo "Invalid commit message."
-  echo "Allowed format: <type>: <short description>"
-  exit 1
-fi
+npx --no-install commitlint --edit "$1"

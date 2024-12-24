@@ -24,6 +24,7 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
           setLoading(false)
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   return (
