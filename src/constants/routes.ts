@@ -3,5 +3,6 @@ enum Routes {
   CONTACTS = '/contacts',
   AUTH = '/auth',
   PROFILE = '/profile',
+  BOOKS = '/books',
 }
 export default Routes
