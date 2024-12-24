@@ -5,14 +5,14 @@ import { User } from '@/types/user'
 export interface UserStore {
   user: User | null
   isLoading: boolean
-  setUser: (user: User) => void
+  setUser: (user: User | null) => void
   setLoading: (isLoading: boolean) => void
 }
 
 const useUserStore = create<UserStore>((set) => ({
   user: null,
   isLoading: false,
-  setUser: (user: User) => set({ user }),
+  setUser: (user) => set({ user }),
   setLoading: (isLoading: boolean) => set({ isLoading }),
 }))
 
