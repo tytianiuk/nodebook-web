@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import '../theme/globals.css'
 import { Inter } from 'next/font/google'
 
-import Footer from '@/components/footer/footer'
 import Header from '@/components/header/header'
 import Providers from '@/lib/providers'
 
@@ -10,10 +9,12 @@ const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 
 export const metadata: Metadata = {
   title: 'Nodebook',
+  description:
+    'Nodebook is an online platform for book lovers to discuss, review, and share their favorite books. Join the community and explore a variety of genres.',
   icons: [
     {
       rel: 'icon',
-      url: '/favicon.ico',
+      url: '/square-library.svg',
     },
   ],
 }
@@ -33,7 +34,6 @@ export default function RootLayout({
           <main className='flex-grow max-w-screen-2xl w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8'>
             {children}
           </main>
-          <Footer />
         </Providers>
       </body>
     </html>

@@ -39,7 +39,7 @@ const FavoriteBooks = () => {
             </p>
           </div>
         ) : (
-          <div className='max-h-[600px]  overflow-y-auto pr-4'>
+          <div className='max-h-[calc(100vh-320px)]  overflow-y-auto pr-4'>
             <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
               {favoriteBooks.map((book, index) => (
                 <div className='h-4/5' key={index}>

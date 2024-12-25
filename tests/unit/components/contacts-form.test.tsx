@@ -41,13 +41,18 @@ describe('ContactsForm', () => {
 
     expect(screen.getByLabelText('Тема')).toBeInTheDocument()
     expect(screen.getByLabelText('Повідомлення')).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', { name: 'Відправити' }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Відправити' })).toBeDisabled()
   })
 
   it('displays error messages for invalid input', async () => {
     render(<ContactsForm />)
+
+    fireEvent.change(screen.getByLabelText('Тема'), {
+      target: { value: '5' },
+    })
+    fireEvent.change(screen.getByLabelText('Повідомлення'), {
+      target: { value: '10' },
+    })
 
     fireEvent.click(screen.getByRole('button', { name: 'Відправити' }))
 
