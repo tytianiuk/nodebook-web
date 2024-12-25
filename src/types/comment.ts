@@ -1,5 +1,7 @@
+import { User } from '@/types/user'
+
 export type Comment = {
-  id: string
-  userName: string
+  _id: string
+  userId: User
   comment: string
 }

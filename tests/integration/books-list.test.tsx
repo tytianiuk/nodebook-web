@@ -17,26 +17,26 @@ jest.mock('@/app/catalog/components/book-card', () => ({
 describe('BooksList', () => {
   const mockBooks = [
     {
-      id: '1',
+      _id: '1',
       name: 'Книга 1',
       author: 'Автор 1',
-      category: 'Художня література',
+      categoryId: { _id: 'cat1', name: 'Художня література' },
       pageQuantity: 1,
       averageRating: 4,
     },
     {
-      id: '2',
+      _id: '2',
       name: 'Книга 2',
       author: 'Автор 2',
-      category: 'Наукова фантастика',
+      categoryId: { _id: 'cat2', name: 'Наукова фантастика' },
       pageQuantity: 2,
       averageRating: 5,
     },
     {
-      id: 3,
+      _id: '3',
       name: 'Книга 3',
       author: 'Автор 3',
-      category: 'Художня література',
+      categoryId: { _id: 'cat1', name: 'Художня література' },
       pageQuantity: 3,
       averageRating: 3.5,
     },
@@ -89,8 +89,8 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 2')).toBeNull()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
@@ -107,16 +107,16 @@ describe('BooksList', () => {
     render(<BooksList filters={searchFilter} />)
 
     await waitFor(() => {
-      expect(screen.queryByText('Книга 1')).toBeNull()
+      expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()
       expect(screen.getByText('Книга 2')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
   it('should display filtered books based on the provided filters (category)', async () => {
     const searchFilter: Filters = {
       search: '',
-      category: 'Художня література',
+      category: 'cat1',
       minRating: 0,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -127,7 +127,7 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 2')).toBeNull()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
       expect(screen.getByText('Книга 3')).toBeInTheDocument()
     })
   })
@@ -147,14 +147,14 @@ describe('BooksList', () => {
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
       expect(screen.getByText('Книга 2')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
   it('should display filtered books based on the provided filters (category & minRating)', async () => {
     const searchFilter: Filters = {
       search: '',
-      category: 'Художня література',
+      category: 'cat1',
       minRating: 4,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -165,15 +165,15 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 2')).toBeNull()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
   it('should display filtered books based on the provided filters (all)', async () => {
     const searchFilter: Filters = {
       search: '3',
-      category: 'Художня література',
+      category: 'cat1',
       minRating: 3,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -183,21 +183,38 @@ describe('BooksList', () => {
     render(<BooksList filters={searchFilter} />)
 
     await waitFor(() => {
-      expect(screen.queryByText('Книга 1')).toBeNull()
-      expect(screen.queryByText('Книга 2')).toBeNull()
+      expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
       expect(screen.getByText('Книга 3')).toBeInTheDocument()
     })
   })
 
-  it('should handle loading state if books data is not available', async () => {
+  it('should handle empty book array', async () => {
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
-      data: null,
+      data: [],
     })
 
     render(<BooksList filters={filters} />)
 
     await waitFor(() => {
       expect(screen.getByText('Книг не знайдено')).toBeInTheDocument()
+    })
+  })
+
+  it('should display the "no books found" message with correct text', async () => {
+    ;(useSuspenseQuery as jest.Mock).mockReturnValue({
+      data: [],
+    })
+
+    render(<BooksList filters={filters} />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Книг не знайдено')).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'На жаль, за вашим запитом не знайдено жодної книги. Спробуйте змінити параметри пошуку або перегляньте наш повний каталог.',
+        ),
+      ).toBeInTheDocument()
     })
   })
 })
