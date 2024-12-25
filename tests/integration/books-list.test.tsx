@@ -17,7 +17,7 @@ jest.mock('@/app/catalog/components/book-card', () => ({
 describe('BooksList', () => {
   const mockBooks = [
     {
-      id: '1',
+      _id: '1',
       name: 'Книга 1',
       author: 'Автор 1',
       category: 'Художня література',
@@ -25,7 +25,7 @@ describe('BooksList', () => {
       averageRating: 4,
     },
     {
-      id: '2',
+      _id: '2',
       name: 'Книга 2',
       author: 'Автор 2',
       category: 'Наукова фантастика',
@@ -33,7 +33,7 @@ describe('BooksList', () => {
       averageRating: 5,
     },
     {
-      id: 3,
+      _id: '3',
       name: 'Книга 3',
       author: 'Автор 3',
       category: 'Художня література',
@@ -89,8 +89,8 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 2')).toBeNull()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
@@ -107,9 +107,9 @@ describe('BooksList', () => {
     render(<BooksList filters={searchFilter} />)
 
     await waitFor(() => {
-      expect(screen.queryByText('Книга 1')).toBeNull()
+      expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()
       expect(screen.getByText('Книга 2')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
@@ -127,7 +127,7 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 2')).toBeNull()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
       expect(screen.getByText('Книга 3')).toBeInTheDocument()
     })
   })
@@ -147,7 +147,7 @@ describe('BooksList', () => {
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
       expect(screen.getByText('Книга 2')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
@@ -165,8 +165,8 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
-      expect(screen.queryByText('Книга 2')).toBeNull()
-      expect(screen.queryByText('Книга 3')).toBeNull()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 3')).not.toBeInTheDocument()
     })
   })
 
@@ -183,8 +183,8 @@ describe('BooksList', () => {
     render(<BooksList filters={searchFilter} />)
 
     await waitFor(() => {
-      expect(screen.queryByText('Книга 1')).toBeNull()
-      expect(screen.queryByText('Книга 2')).toBeNull()
+      expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
       expect(screen.getByText('Книга 3')).toBeInTheDocument()
     })
   })

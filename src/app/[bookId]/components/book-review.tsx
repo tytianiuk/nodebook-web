@@ -34,6 +34,9 @@ const BookReview = ({ review }: BookReviewProps) => {
                     ? 'text-yellow-400'
                     : 'text-muted-foreground'
                 }`}
+                data-testid={`${
+                  i < review.rating ? 'filled-star' : 'empty-star'
+                }`}
               />
             ))}
           </div>

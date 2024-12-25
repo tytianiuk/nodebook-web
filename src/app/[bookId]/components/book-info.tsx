@@ -45,6 +45,11 @@ const BookInfo = ({ book }: BookInfoProps) => {
                       ? 'text-yellow-400'
                       : 'text-muted-foreground'
                   }`}
+                  data-testid={`${
+                    i < Math.floor(book.averageRating as number)
+                      ? 'filled-star'
+                      : 'empty-star'
+                  }`}
                 />
               ))}
               <span className='ml-2 text-muted-foreground'>
