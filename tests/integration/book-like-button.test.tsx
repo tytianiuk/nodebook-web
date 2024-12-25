@@ -69,4 +69,16 @@ describe('BookLikeButton', () => {
       expect(screen.getByText('Прибрати вподобайку')).toBeInTheDocument()
     })
   })
+
+  it('does not render the like button if the user is not logged in', () => {
+    ;(useUserStore as unknown as jest.Mock).mockReturnValue({ user: null })
+    render(<BookLikeButton book={mockBook} />)
+
+    expect(
+      screen.queryByPlaceholderText(/Поставити вподобайку/i),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByPlaceholderText(/Прибрати вподобайку/i),
+    ).not.toBeInTheDocument()
+  })
 })

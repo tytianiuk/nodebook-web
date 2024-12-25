@@ -49,4 +49,13 @@ describe('BookCommentsForm', () => {
 
     expect(screen.getByText('Додати коментар')).toBeEnabled()
   })
+
+  it('does not render the form if the user is not logged in', () => {
+    ;(useUserStore as unknown as jest.Mock).mockReturnValue({ user: null })
+    render(<BookCommentsForm bookId='book1' updateBook={mockUpdateBook} />)
+
+    expect(
+      screen.queryByPlaceholderText(/Напишіть свій коментар/i),
+    ).not.toBeInTheDocument()
+  })
 })

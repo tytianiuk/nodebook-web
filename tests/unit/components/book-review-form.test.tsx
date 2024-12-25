@@ -45,4 +45,14 @@ describe('BookReviewForm', () => {
 
     expect(screen.getByText('Додати відгук')).toBeEnabled()
   })
+
+  it('does not render the form if the user is not logged in', () => {
+    ;(useUserStore as unknown as jest.Mock).mockReturnValue({ user: null })
+    render(<BookReviewForm bookId='book1' updateBook={mockUpdateBook} />)
+
+    expect(
+      screen.queryByPlaceholderText(/Напишіть свій відгук/i),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText('Рейтинг:')).not.toBeInTheDocument()
+  })
 })
