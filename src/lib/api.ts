@@ -21,7 +21,6 @@ export interface RequestConfig<T = unknown> {
   timeout?: number
   signal?: AbortSignal
   cache?: RequestCache
-  onUploadProgress?: (progressEvent: { loaded: number; total: number }) => void
 }
 
 export type GetConfig = Omit<RequestConfig, 'method'>
