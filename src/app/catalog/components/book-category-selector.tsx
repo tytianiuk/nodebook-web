@@ -18,7 +18,10 @@ const BooksCategorySelector = () => {
 
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['categories'],
-    queryFn: CategoriesAPI.getAllCategories,
+    queryFn: async () => {
+      const response = await CategoriesAPI.getAllCategories()
+      return response.data as Category[]
+    },
   })
 
   const handleCategoryChange = (categoryId: string) => {

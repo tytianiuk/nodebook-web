@@ -11,10 +11,10 @@ import {
 import AuthAPI from '@/api/auth-api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import errorMessages from '@/constants/error-messages'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
+import { User } from '@/types/user'
 
 const SignUpForm = () => {
   const { replace } = useRouter()
@@ -41,21 +41,16 @@ const SignUpForm = () => {
 
       if (res.status === 201) {
         await AuthAPI.login(email, password)
-        const user = await AuthAPI.getMe()
+        const response = await AuthAPI.getMe()
+        const user = response.data as User
         setUser(user)
         replace(Routes.CATALOG)
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const { title, description } = errorMessages[error?.status] || {
-        title: 'Помилка при створенні аккаунту',
-        description:
-          error.message || 'Сталася невідома помилка. Спробуйте пізніше.',
-      }
-
+    } catch {
       toast({
-        title,
-        description,
+        title: 'Помилка при вході',
+        description: 'До цієї пошти вже прив`язаний обліковий запис',
         variant: 'destructive',
       })
     }

@@ -6,10 +6,10 @@ import { LoginFormValues, signInDefaultValues } from '../constants'
 import AuthAPI from '@/api/auth-api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import errorMessages from '@/constants/error-messages'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
+import { User } from '@/types/user'
 
 const SignInForm = () => {
   const { toast } = useToast()
@@ -33,19 +33,16 @@ const SignInForm = () => {
 
     try {
       await AuthAPI.login(email, password)
-      const user = await AuthAPI.getMe()
+      const response = await AuthAPI.getMe()
+      const user = response.data as User
       setUser(user)
       replace(Routes.CATALOG)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const { title, description } = errorMessages[error.status] || {
-        title: 'Помилка при вході',
-        description: 'Сталася невідома помилка. Спробуйте пізніше.',
-      }
-
+    } catch {
       toast({
-        title,
-        description,
+        title: 'Помилка при вході',
+        description:
+          'Пароль або пошта введені не правильно. Можливо цього профілю не існує.',
         variant: 'destructive',
       })
     }

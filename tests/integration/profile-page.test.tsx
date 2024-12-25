@@ -32,22 +32,24 @@ jest.mock('next/navigation', () => ({
   }),
 }))
 
-const mockBooks = [
-  {
-    _id: '1',
-    name: 'Favorite Book 1',
-    author: 'Author 1',
-    categoryId: { name: 'Category 1' },
-    averageRating: 4,
-  },
-  {
-    _id: '2',
-    name: 'Favorite Book 2',
-    author: 'Author 2',
-    categoryId: { name: 'Category 2' },
-    averageRating: 5,
-  },
-]
+const mockBooks = {
+  data: [
+    {
+      _id: '1',
+      name: 'Favorite Book 1',
+      author: 'Author 1',
+      categoryId: { name: 'Category 1' },
+      averageRating: 4,
+    },
+    {
+      _id: '2',
+      name: 'Favorite Book 2',
+      author: 'Author 2',
+      categoryId: { name: 'Category 2' },
+      averageRating: 5,
+    },
+  ],
+}
 
 describe('ProfilePage Integration', () => {
   beforeEach(() => {

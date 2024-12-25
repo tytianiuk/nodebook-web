@@ -19,7 +19,7 @@ const Book = ({ params }: BookProps) => {
   const fetchBook = async () => {
     try {
       const fetchedBook = await BooksAPI.getBookById(params.bookId)
-      setBook(fetchedBook)
+      setBook(fetchedBook.data as Book)
     } catch {
       setBook(null)
     }

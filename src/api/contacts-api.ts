@@ -1,30 +1,10 @@
+import api from '@/lib/api'
+
 class ContactsAPI {
   async sendMessage(subject: string, content: string) {
-    try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/users/message/support',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-
-          body: JSON.stringify({ subject, content }),
-          credentials: 'include',
-        },
-      )
-
-      if (!response.ok) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const error: any = new Error(`Error status: ${response.status}`)
-        error.status = response.status
-        throw error
-      }
-
-      return response
-    } catch (error) {
-      throw error
-    }
+    return await api.post('/users/message/support', {
+      body: { subject, content },
+    })
   }
 }
 
