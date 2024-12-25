@@ -9,6 +9,8 @@ const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 
 export const metadata: Metadata = {
   title: 'Nodebook',
+  description:
+    'Nodebook is an online platform for book lovers to discuss, review, and share their favorite books. Join the community and explore a variety of genres.',
   icons: [
     {
       rel: 'icon',

@@ -1,5 +1,4 @@
 import { Loader2 } from 'lucide-react'
-import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { FC, Suspense } from 'react'
 
@@ -22,10 +21,6 @@ const DynamicBooksList = dynamic(
 
 interface CatalogProps {
   searchParams: Filters
-}
-
-export const metadata: Metadata = {
-  title: 'Каталог | NoteBook',
 }
 
 const Catalog: FC<CatalogProps> = async ({ searchParams }) => {
