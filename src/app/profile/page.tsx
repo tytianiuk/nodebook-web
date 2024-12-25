@@ -18,7 +18,7 @@ import useUserStore from '@/hooks/store/use-user-store'
 const ProfilePage = () => {
   const { user } = useUserStore((state) => state)
   return (
-    <div className='container mx-auto p-4'>
+    <div className='container mx-auto'>
       <div className='flex flex-col lg:flex-row gap-6'>
         <ProfileCard user={user!} />
         <Card className='w-full lg:w-2/3'>
