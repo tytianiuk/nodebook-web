@@ -25,19 +25,22 @@ const ContactsForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    watch,
   } = useForm<FormValues>({
     resolver: zodResolver(FormValuesSchema),
     defaultValues: FormValues,
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const allFields = watch()
+
+  const allFieldsFilled = Object.values(allFields).every((value) => value)
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     if (!user) {
       setIsDialogOpen(true)
       return
     }
-    setIsSubmitting(true)
     const { subject, message } = data
     try {
       await ContactsAPI.sendMessage(subject, message)
@@ -54,8 +57,6 @@ const ContactsForm = () => {
           'Виникла помилка при відправці повідомлення. Спробуйте ще раз.',
         variant: 'destructive',
       })
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
@@ -112,9 +113,10 @@ const ContactsForm = () => {
         <Button
           type='submit'
           className='w-full bg-black text-white hover:bg-gray-800'
-          disabled={isSubmitting}
+          disabled={!allFieldsFilled || isSubmitting}
+          isLoading={isSubmitting}
         >
-          {isSubmitting ? 'Відправляється...' : 'Відправити'}
+          Відправити
         </Button>
       </form>
 
