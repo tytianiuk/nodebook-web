@@ -17,8 +17,8 @@ const FavoriteBooks = () => {
   useEffect(() => {
     const getFavoriteBooks = async () => {
       try {
-        const books = await profileAPI.getLikedBooks()
-        setFavoriteBooks(books)
+        const response = await profileAPI.getLikedBooks()
+        setFavoriteBooks(response.data as Book[])
       } catch {}
     }
     getFavoriteBooks()

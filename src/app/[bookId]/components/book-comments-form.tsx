@@ -31,7 +31,7 @@ const BookCommentsForm = ({
   const allFieldsFilled = allFields.content.trim() !== ''
 
   const onSubmit = async (data: { content: string }) => {
-    const comment = { userId: user!._id, comment: data.content }
+    const comment = data.content
 
     try {
       await BooksAPI.addComment(bookId, comment)

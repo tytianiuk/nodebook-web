@@ -4,9 +4,11 @@ import AuthAPI from '@/api/auth-api'
 import SignUpForm from '@/app/auth/components/sign-up-form'
 
 jest.mock('@/api/auth-api', () => ({
-  register: jest.fn(),
-  login: jest.fn(),
-  getMe: jest.fn(),
+  register: jest.fn().mockResolvedValue({ status: 201 }),
+  login: jest.fn().mockResolvedValue({}),
+  getMe: jest.fn().mockResolvedValue({
+    data: { _id: '1', username: 'Test User', email: 'test@example.com' },
+  }),
 }))
 
 const mockReplace = jest.fn()
@@ -37,14 +39,6 @@ describe('SignUpForm Integration', () => {
   })
 
   it('handles successful registration', async () => {
-    jest.mocked(AuthAPI.register).mockResolvedValue({ status: 201 })
-    jest.mocked(AuthAPI.login).mockResolvedValue({})
-    jest.mocked(AuthAPI.getMe).mockResolvedValue({
-      id: '1',
-      username: 'Test User',
-      email: 'test@example.com',
-    })
-
     render(<SignUpForm />)
 
     fireEvent.change(screen.getByLabelText("Ім'я"), {
@@ -74,7 +68,7 @@ describe('SignUpForm Integration', () => {
       )
       expect(AuthAPI.getMe).toHaveBeenCalled()
       expect(mockSetUser).toHaveBeenCalledWith({
-        id: '1',
+        _id: '1',
         username: 'Test User',
         email: 'test@example.com',
       })
@@ -83,7 +77,7 @@ describe('SignUpForm Integration', () => {
   })
 
   it('handles registration failure', async () => {
-    const error = new Error('Registration failed')
+    const error = new Error()
     jest.mocked(AuthAPI.register).mockRejectedValue(error)
 
     render(<SignUpForm />)
@@ -110,8 +104,8 @@ describe('SignUpForm Integration', () => {
         'password123',
       )
       expect(mockToast).toHaveBeenCalledWith({
-        title: 'Помилка при створенні аккаунту',
-        description: 'Registration failed',
+        title: 'Помилка при вході',
+        description: 'До цієї пошти вже прив`язаний обліковий запис',
         variant: 'destructive',
       })
     })

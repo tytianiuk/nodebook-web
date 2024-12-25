@@ -16,7 +16,7 @@ const BooksList = ({ filters }: BooksListProps) => {
     queryKey: ['catalog', filters],
     queryFn: async () => {
       const data = await BooksAPI.getAllBooks()
-      return filterBooks(data, filters)
+      return filterBooks(data.data as Book[], filters)
     },
   })
 

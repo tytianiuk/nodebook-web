@@ -20,7 +20,8 @@ const BookLikeButton = ({ book }: BookLikeButtonProps) => {
   useEffect(() => {
     const checkIfLiked = async () => {
       if (user) {
-        const likedBooks = await BooksAPI.getBooksLiked()
+        const response = await BooksAPI.getBooksLiked()
+        const likedBooks = response.data as Book[]
         setIsLiked(
           likedBooks.some((likedBook: Book) => likedBook._id === book._id),
         )

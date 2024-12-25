@@ -6,6 +6,7 @@ import { FC, PropsWithChildren, useEffect } from 'react'
 import AuthAPI from '@/api/auth-api'
 import { Toaster } from '@/components/ui/toaster'
 import useUserStore from '@/hooks/store/use-user-store'
+import { User } from '@/types/user'
 
 const queryClient = new QueryClient()
 
@@ -17,7 +18,7 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
       setLoading(true)
       AuthAPI.getMe()
         .then((response) => {
-          setUser(response)
+          setUser(response.data as User)
           setLoading(false)
         })
         .catch(() => {

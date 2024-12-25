@@ -30,18 +30,22 @@ jest.mock('@/hooks/store/use-user-store', () => ({
   }),
 }))
 
+const mockUser = {
+  data: {
+    id: '1',
+    username: 'testuser',
+    email: 'test@example.com',
+  },
+}
+
 describe('SignInForm Integration', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
   it('handles successful login', async () => {
-    jest.mocked(AuthAPI.login).mockResolvedValue({})
-    jest.mocked(AuthAPI.getMe).mockResolvedValue({
-      id: '1',
-      username: 'testuser',
-      email: 'test@example.com',
-    })
+    ;(AuthAPI.login as jest.Mock).mockResolvedValue(mockUser)
+    ;(AuthAPI.getMe as jest.Mock).mockResolvedValue(mockUser)
 
     render(<SignInForm />)
 
@@ -70,8 +74,7 @@ describe('SignInForm Integration', () => {
   })
 
   it('handles login failure', async () => {
-    const error = new Error('Login failed')
-    jest.mocked(AuthAPI.login).mockRejectedValue(error)
+    jest.mocked(AuthAPI.login).mockRejectedValue(new Error())
 
     render(<SignInForm />)
 
@@ -91,7 +94,8 @@ describe('SignInForm Integration', () => {
       )
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Помилка при вході',
-        description: 'Сталася невідома помилка. Спробуйте пізніше.',
+        description:
+          'Пароль або пошта введені не правильно. Можливо цього профілю не існує.',
         variant: 'destructive',
       })
     })
