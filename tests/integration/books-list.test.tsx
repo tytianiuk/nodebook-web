@@ -20,7 +20,7 @@ describe('BooksList', () => {
       _id: '1',
       name: 'Книга 1',
       author: 'Автор 1',
-      category: 'Художня література',
+      categoryId: { _id: 'cat1', name: 'Художня література' },
       pageQuantity: 1,
       averageRating: 4,
     },
@@ -28,7 +28,7 @@ describe('BooksList', () => {
       _id: '2',
       name: 'Книга 2',
       author: 'Автор 2',
-      category: 'Наукова фантастика',
+      categoryId: { _id: 'cat2', name: 'Наукова фантастика' },
       pageQuantity: 2,
       averageRating: 5,
     },
@@ -36,7 +36,7 @@ describe('BooksList', () => {
       _id: '3',
       name: 'Книга 3',
       author: 'Автор 3',
-      category: 'Художня література',
+      categoryId: { _id: 'cat1', name: 'Художня література' },
       pageQuantity: 3,
       averageRating: 3.5,
     },
@@ -116,7 +116,7 @@ describe('BooksList', () => {
   it('should display filtered books based on the provided filters (category)', async () => {
     const searchFilter: Filters = {
       search: '',
-      category: 'Художня література',
+      category: 'cat1',
       minRating: 0,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -154,7 +154,7 @@ describe('BooksList', () => {
   it('should display filtered books based on the provided filters (category & minRating)', async () => {
     const searchFilter: Filters = {
       search: '',
-      category: 'Художня література',
+      category: 'cat1',
       minRating: 4,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -173,7 +173,7 @@ describe('BooksList', () => {
   it('should display filtered books based on the provided filters (all)', async () => {
     const searchFilter: Filters = {
       search: '3',
-      category: 'Художня література',
+      category: 'cat1',
       minRating: 3,
     }
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -198,6 +198,23 @@ describe('BooksList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Книг не знайдено')).toBeInTheDocument()
+    })
+  })
+
+  it('should display the "no books found" message with correct text', async () => {
+    ;(useSuspenseQuery as jest.Mock).mockReturnValue({
+      data: [],
+    })
+
+    render(<BooksList filters={filters} />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Книг не знайдено')).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'На жаль, за вашим запитом не знайдено жодної книги. Спробуйте змінити параметри пошуку або перегляньте наш повний каталог.',
+        ),
+      ).toBeInTheDocument()
     })
   })
 })

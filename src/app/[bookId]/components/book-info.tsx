@@ -1,6 +1,7 @@
 'use client'
 
 import { Star } from 'lucide-react'
+import Image from 'next/image'
 import React from 'react'
 
 import { Book } from '@/types/book'
@@ -14,10 +15,12 @@ const BookInfo = ({ book }: BookInfoProps) => {
     <div>
       <div className='md:flex'>
         <div className='md:flex-shrink-0'>
-          <img
+          <Image
             className='h-full min-w-72 w-full object-cover md:w-48'
             src={'https://placehold.co/600x400'}
             alt={book.name}
+            width={100}
+            height={100}
           />
         </div>
         <div className='p-8'>

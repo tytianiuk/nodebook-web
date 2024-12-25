@@ -39,7 +39,7 @@ const BookReviewForm = ({
   const onSubmit = async (data: { content: string; rating: number }) => {
     if (!user) return
     const review = {
-      userId: user._id,
+      userId: user!._id,
       comment: data.content,
       rating: data.rating,
     }

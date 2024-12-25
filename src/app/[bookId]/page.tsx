@@ -1,5 +1,6 @@
 'use client'
 
+import { Loader2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 import BooksAPI from '@/api/books-api'
@@ -16,8 +17,12 @@ const Book = ({ params }: BookProps) => {
   const [book, setBook] = useState<Book | null>(null)
 
   const fetchBook = async () => {
-    const fetchedBook = await BooksAPI.getBookById(params.bookId)
-    setBook(fetchedBook)
+    try {
+      const fetchedBook = await BooksAPI.getBookById(params.bookId)
+      setBook(fetchedBook)
+    } catch {
+      setBook(null)
+    }
   }
 
   useEffect(() => {
@@ -25,7 +30,17 @@ const Book = ({ params }: BookProps) => {
   }, [params.bookId])
 
   if (!book) {
-    return <div>Книгу не знайдено</div>
+    return (
+      <div className='flex flex-col items-center justify-center h-[600px] text-center  '>
+        <Loader2 className=' self-center w-12 h-12 animate-spin text-gray-300' />
+        <span className='text-2xl text-gray-300 font-bold mb-2'>
+          Завантаження...
+        </span>
+        <span className='text-2xl text-gray-300 font-bold mb-2'>
+          Можливо, книга була видалена або її не існує
+        </span>
+      </div>
+    )
   }
 
   return (
