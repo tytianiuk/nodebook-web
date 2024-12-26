@@ -39,9 +39,11 @@ const BooksRatingSelect = () => {
           />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value='0'>Будь-який</SelectItem>
+          <SelectItem value='0' data-testid='select-rating'>
+            Будь-який
+          </SelectItem>
           {stars.map((star) => (
-            <SelectItem key={star} value={star}>
+            <SelectItem key={star} value={star} data-testid='select-rating'>
               {star}
             </SelectItem>
           ))}

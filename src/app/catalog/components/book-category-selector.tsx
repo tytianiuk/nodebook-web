@@ -46,9 +46,15 @@ const BooksCategorySelector = () => {
           />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value='all'>Всі жанри</SelectItem>
+          <SelectItem value='all' data-testid='select-category'>
+            Всі жанри
+          </SelectItem>
           {categories.map((category) => (
-            <SelectItem key={category._id} value={category._id}>
+            <SelectItem
+              key={category._id}
+              value={category._id}
+              data-testid='select-category'
+            >
               {category.name}
             </SelectItem>
           ))}

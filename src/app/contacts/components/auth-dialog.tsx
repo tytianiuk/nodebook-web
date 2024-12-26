@@ -29,7 +29,11 @@ const AuthDialog: React.FC<AuthDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
         <div className='flex justify-end space-x-4 mt-4'>
-          <Button variant='outline' onClick={onClose}>
+          <Button
+            variant='outline'
+            onClick={onClose}
+            data-testid='login-button'
+          >
             Увійти
           </Button>
           <Button onClick={onClose}>Створити обліковий запис</Button>

@@ -83,6 +83,7 @@ const ContactsForm = () => {
             Тема
           </label>
           <Input
+            data-testid='subject'
             id='subject'
             {...register('subject')}
             placeholder='Введіть тему повідомлення'
@@ -99,6 +100,7 @@ const ContactsForm = () => {
             Повідомлення
           </label>
           <Textarea
+            data-testid='message'
             id='message'
             {...register('message')}
             placeholder='Введіть ваше повідомлення'
@@ -111,6 +113,7 @@ const ContactsForm = () => {
           )}
         </div>
         <Button
+          data-testid='submit-form'
           type='submit'
           className='w-full bg-black text-white hover:bg-gray-800'
           disabled={!allFieldsFilled || isSubmitting}
