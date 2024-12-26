@@ -40,5 +40,4 @@ yarn-error.log*
 next-env.d.ts
 
 #test 
-/test-results
-/playwright-report
+/cypress
