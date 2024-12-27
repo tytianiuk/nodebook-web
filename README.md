@@ -53,11 +53,24 @@
     - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_BiDcMZ_5J6/)
 
   - **Сторінка профілю**
+
     - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-profile/5gv34atgpq?hl=uk&form_factor=desktop)
     - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDc8C_5JC/)
 
+  - **Сторінка каталогу (головна сторінка)**
+
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app/z4xtdlymiw?form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_BiDcTD_7P0/)
+
+  - **Сторінка книги**
+
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-676c16bfbacc3dd34717d3c8/5lgein33l1?form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDcAP_7DT/)
+
   Проаналізувавши ці сторінки, виявили недоліки у кількох аспектах:
 
+  - відображення великого контенту йде з затримкою
+  - деякі кнопки не мають доступних для зчитування назв
   - використання `<html lang="ua">`, який не має дійсного значення в нашому випадку
   - недостатність контрастність кольорів в інтерфейсі
   - відсутність файлу **robots.txt** для пошукових систем
