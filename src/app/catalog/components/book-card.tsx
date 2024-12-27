@@ -27,9 +27,7 @@ const BookCard = ({ book }: BookCardProps) => {
         width={600}
         height={400}
         className='rounded-t-lg w-full object-cover'
-        loading='lazy'
-        placeholder='blur'
-        blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvXJ1PQAGxwIvhCi3BQAAAABJRU5ErkJggg=='
+        priority
       />
       <CardHeader>
         <CardTitle data-testid='title'>{book.name}</CardTitle>

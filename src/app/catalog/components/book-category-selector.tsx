@@ -39,7 +39,7 @@ const BooksCategorySelector = () => {
         onValueChange={handleCategoryChange}
         defaultValue={category || undefined}
       >
-        <SelectTrigger>
+        <SelectTrigger aria-label='Виберіть жанр'>
           <SelectValue
             data-testid='category-selector'
             placeholder='Виберіть жанр'

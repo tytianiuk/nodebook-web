@@ -32,7 +32,7 @@ const BooksRatingSelect = () => {
         onValueChange={handleRatingChange}
         defaultValue={minRating || undefined}
       >
-        <SelectTrigger>
+        <SelectTrigger aria-label='Виберіть рейтинг'>
           <SelectValue
             data-testid='rating-selector'
             placeholder='Виберіть рейтинг'
