@@ -9,6 +9,7 @@ describe('Book Page', () => {
       cy.wait(500)
 
       cy.visit('/676c1719bacc3dd34717d3e4')
+      cy.wait(100)
     })
 
     it('should display book information', () => {
@@ -38,17 +39,24 @@ describe('Book Page', () => {
       cy.get('[data-testid=review]').should('contain', 'This is a test review')
     })
 
-    //   it('should add a comment', () => {
-    //     cy.get('[data-testid=comments]').click()
-    //     cy.get('textarea[name="content"]').type('This is a test comment')
-    //     cy.contains('Додати коментар').click()
-    //     cy.get('[data-testid=comment]').should('contain', 'This is a test comment')
-    //   })
+    it('should add a comment', () => {
+      cy.get('[data-testid=comments]').click()
+      cy.wait(200)
+      cy.get('textarea[name="content"]').type('This is a test comment')
+      cy.contains('Додати коментар').click()
+      cy.wait(200)
+      cy.get('[data-testid=comment]').should(
+        'contain',
+        'This is a test comment',
+      )
+    })
 
     it('should toggle like button', () => {
       cy.contains('Поставити вподобайку').click()
+      cy.wait(200)
       cy.contains('Прибрати вподобайку').should('be.visible')
       cy.contains('Прибрати вподобайку').click()
+      cy.wait(200)
       cy.contains('Поставити вподобайку').should('be.visible')
     })
 
