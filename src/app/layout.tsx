@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import '../theme/globals.css'
 import { Inter } from 'next/font/google'
@@ -25,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='ua'>
+    <html lang='uk'>
       <body
         className={`${inter.className} antialiased min-h-screen flex flex-col `}
       >
@@ -35,6 +36,7 @@ export default function RootLayout({
             {children}
           </main>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   )

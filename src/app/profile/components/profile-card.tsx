@@ -72,7 +72,7 @@ const ProfileCard = ({ user }: { user: User }) => {
           <Button
             variant='destructive'
             onClick={() => setIsDialogOpen(true)}
-            className='w-full'
+            className={`w-full text-primary-foreground hover:bg-red-400 bg-red-600`}
             disabled={!user}
           >
             <LogOut className='mr-2 h-4 w-4' />
