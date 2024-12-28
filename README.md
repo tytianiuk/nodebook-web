@@ -61,8 +61,8 @@
 
 ## Лабораторна робота №2
 
-- [Prettier] (https://github.com/tytianiuk/nodebook-web/blob/main/.prettierrc)
-- [ESlint] (https://github.com/tytianiuk/nodebook-web/blob/main/.eslintrc.json)
+- [Prettier](https://github.com/tytianiuk/nodebook-web/blob/main/.prettierrc)
+- [ESlint](https://github.com/tytianiuk/nodebook-web/blob/main/.eslintrc.json)
 - Husky як git-hooks
   - [commit-msg](https://github.com/tytianiuk/nodebook-web/blob/main/.husky/commit-msg)
   - [pre-commit](https://github.com/tytianiuk/nodebook-web/blob/main/.husky/pre-commit)
@@ -70,15 +70,13 @@
 
 ## Лабораторна робота №3
 
-### 📈 Діаграма компонентів ([Сачко Максим](<(https://github.com/tytianiuk/nodebook-web/commit/4ca7181c14a29af55fb7e4ef83095af2328b599b)>))
+### 📈 Діаграма компонентів ([Сачко Максим](https://github.com/tytianiuk/nodebook-web/commit/4ca7181c14a29af55fb7e4ef83095af2328b599b))
 
-![Components diagram](./graph.jpeg)
-
-[commit](https://github.com/tytianiuk/nodebook-web/commit/4ca7181c14a29af55fb7e4ef83095af2328b599b)
+![Components diagram](/public/graph.jpeg)
 
 ### 📈 Use Case діаграма ([Титянюк Артем](https://github.com/tytianiuk/nodebook-web/commit/e3a61c950b6285439f22dd9126bfe850f129a716))
 
-![Use Case Diagram](./use-case-diagram.jpeg)
+![Use Case Diagram](/public/use-case-diagram.jpeg)
 
 ## Лабораторна робота №4
 
@@ -172,11 +170,11 @@
 
 ### Аніліз сторінок (авторизований користувач)
 
-![Profile page analyze with auth](/screenshots/profile-page-analyze-with-auth.jpg)
+![Profile page analyze with auth](/public/screenshots/profile-page-analyze-with-auth.jpg)
 
 Коли ж ми аналізуємо ці сторінки з авторизованим користувачем, то зменшується показник оптимальних підходів, тому що починають використовуватися cookie, який приймаються сервера.
 
-![Warning cookie message](/screenshots/cookie-message.jpg)
+![Warning cookie message](/public/screenshots/cookie-message.jpg)
 
 ### Вирішення проблем
 
