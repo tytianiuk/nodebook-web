@@ -1,8 +1,11 @@
-import api from '@/lib/api'
+import { api } from 'nodebook-api'
+
+import env from '@/lib/env'
 
 class ContactsAPI {
   async sendMessage(subject: string, content: string) {
     return await api.post('/users/message/support', {
+      baseURL: env.API_URL,
       body: { subject, content },
     })
   }
