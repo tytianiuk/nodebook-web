@@ -1,8 +1,12 @@
-import api from '@/lib/api'
+import { api } from 'nodebook-api'
+
+import env from '@/lib/env'
 
 class CategoriesAPI {
   async getAllCategories() {
-    return await api.get('/categories')
+    return await api.get('/categories', {
+      baseURL: env.API_URL,
+    })
   }
 }
 

@@ -59,6 +59,8 @@
 
 Посилання на [Back-end](https://github.com/DreammyOleksandr/nodebook-server)
 
+Посилання на [Бібліотеку](https://github.com/SachkoMaxim/nodebook-api-lib)
+
 ## Лабораторна робота №2
 
 - [Prettier](https://github.com/tytianiuk/nodebook-web/blob/main/.prettierrc)
@@ -82,10 +84,10 @@
 
 Із самого початку розробки вирішили відразу підключити базу данних, бо вважали це зручнішим.
 
-Проте трохи використали статичні дані, у цьому [Pull Request](https://github.com/tytianiuk/nodebook-web/pull/3) продемонстровано:
+Проте трохи використали статичні дані, у цьому [Pull Request](https://github.com/tytianiuk/nodebook-web/pull/3) (Сачко Максим) продемонстровано:
 
 - [статичні файли](https://github.com/tytianiuk/nodebook-web/tree/main/src/mock)
-- [мокнутий користувач на сторінці логіну](https://github.com/tytianiuk/nodebook-web/pull/4/commits/7af59b77b725434d8fe12427f8346ee1b413ef32#diff-7f748f9375382cca428afc3c03fe10d817dc21efc20e8f6db79c216efb148990)
+- [мокнутий користувач на сторінці логіну](https://github.com/tytianiuk/nodebook-web/pull/4/commits/7af59b77b725434d8fe12427f8346ee1b413ef32#diff-7f748f9375382cca428afc3c03fe10d817dc21efc20e8f6db79c216efb148990) (Титянюк Артем)
 
 ## Лабораторна робота №5
 
@@ -135,30 +137,34 @@
 
 ### Аніліз сторінок (не авторизований користувач)
 
-- **Сторінка контактів**
+- **Титянюк Артем**
 
-  - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-contacts/tr0yqom7t3?hl=uk&form_factor=desktop)
-  - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDcSV_5H7/)
+  - **Сторінка контактів**
 
-- **Сторінка авторизації**
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-contacts/tr0yqom7t3?hl=uk&form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDcSV_5H7/)
 
-  - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-auth/2i6205z3e5?hl=uk&form_factor=desktop)
-  - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_BiDcMZ_5J6/)
+  - **Сторінка авторизації**
 
-- **Сторінка профілю**
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-auth/2i6205z3e5?hl=uk&form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_BiDcMZ_5J6/)
 
-  - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-profile/5gv34atgpq?hl=uk&form_factor=desktop)
-  - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDc8C_5JC/)
+  - **Сторінка профілю**
 
-- **Сторінка каталогу (головна сторінка)**
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-profile/5gv34atgpq?hl=uk&form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDc8C_5JC/)
 
-  - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app/z4xtdlymiw?form_factor=desktop)
-  - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_BiDcTD_7P0/)
+- **Сачко Максим**
 
-- **Сторінка книги**
+  - **Сторінка каталогу (головна сторінка)**
 
-  - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-676c16bfbacc3dd34717d3c8/5lgein33l1?form_factor=desktop)
-  - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDcAP_7DT/)
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app/z4xtdlymiw?form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_BiDcTD_7P0/)
+
+  - **Сторінка книги**
+
+    - [_Посилання на PageSpeed_](https://pagespeed.web.dev/analysis/https-nodebook-web-vercel-app-676c16bfbacc3dd34717d3c8/5lgein33l1?form_factor=desktop)
+    - [_Посилання на WebPageTest_](https://www.webpagetest.org/result/241227_AiDcAP_7DT/)
 
 Проаналізувавши ці сторінки, виявили недоліки у кількох аспектах:
 
@@ -184,8 +190,16 @@
 
 ## Лабораторна робота №9
 
-Ми вирішили, що модуль з api був найбільш проблематичним та потребував рефакторингу.
+Після аналізу ми вирішили, що модуль з api був найбільш проблематичним та потребував рефакторингу.
 
-Тож абстрагували його і зробили рефакторинг: [commit](https://github.com/tytianiuk/nodebook-web/pull/13/commits/a07a3f0b1a3fb1387d9385f55077ff9bbf17bc14).
+- **Титянюк Артем**
+
+  - абстрагував його і зробив рефакторинг: [commit](https://github.com/tytianiuk/nodebook-web/pull/13/commits/a07a3f0b1a3fb1387d9385f55077ff9bbf17bc14).
+
+- **Сачко Максим**
+
+  - зробив окремий репозиторій та зробив ще один невеликий рефакторинг: [репозиторій](https://github.com/SachkoMaxim/nodebook-api-lib)
+  - опублікував бібліотеку в npm як: **nodebook-api**
+  - пробрав модуль з проекту та замінив бібліотекою: [commit](https://github.com/tytianiuk/nodebook-web/pull/17).
 
 Проєкт увесь написаний на TypeScript.
