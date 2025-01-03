@@ -14,7 +14,10 @@ describe('Full User Journey', () => {
     cy.wait(300)
 
     // go to BOOK
-    cy.url().should('eq', 'http://localhost:3000/676c16bfbacc3dd34717d3c8')
+    cy.url().should(
+      'eq',
+      `${Cypress.config('baseUrl')}/676c16bfbacc3dd34717d3c8`,
+    )
     cy.get('[data-testid=book-name]').should('be.visible')
     cy.wait(100)
 
@@ -27,7 +30,7 @@ describe('Full User Journey', () => {
     cy.wait(100)
 
     // go to AUTH
-    cy.url().should('eq', 'http://localhost:3000/auth')
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/auth`)
     cy.get('#login-email').type(email)
     cy.get('#login-password').type(password)
     cy.get('[data-testid=login-submit]').click()
@@ -47,13 +50,16 @@ describe('Full User Journey', () => {
 
     // go to CATALOG
     cy.contains('Успішно відправлено!').should('be.visible')
-    cy.url().should('eq', 'http://localhost:3000/')
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`)
     cy.get('#search').type('Дюна')
     cy.wait(300)
     cy.get('a').contains('Детальніше').first().click()
 
     // go to BOOK
-    cy.url().should('eq', 'http://localhost:3000/676c16bfbacc3dd34717d3c8')
+    cy.url().should(
+      'eq',
+      `${Cypress.config('baseUrl')}/676c16bfbacc3dd34717d3c8`,
+    )
     cy.contains('Поставити вподобайку').click()
     cy.contains('Прибрати вподобайку').should('be.visible')
     cy.get('[data-testid=reviews]').click({ force: true })
@@ -81,7 +87,10 @@ describe('Full User Journey', () => {
     cy.wait(100)
 
     // go to BOOK
-    cy.url().should('eq', 'http://localhost:3000/676c16bfbacc3dd34717d3c8')
+    cy.url().should(
+      'eq',
+      `${Cypress.config('baseUrl')}/676c16bfbacc3dd34717d3c8`,
+    )
     cy.contains('Прибрати вподобайку').click({ force: true })
     cy.wait(100)
     cy.contains('Поставити вподобайку').should('be.visible')
@@ -91,7 +100,7 @@ describe('Full User Journey', () => {
     cy.wait(100)
     cy.contains('Вийти з профілю').click()
     cy.get('[data-testid=confirm]').click()
-    cy.url().should('eq', 'http://localhost:3000/')
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`)
     cy.contains('Увійти').should('be.visible')
   })
 })
