@@ -47,7 +47,7 @@ describe('Profile Page', () => {
     cy.get('[data-testid=confirm]').click()
     cy.wait(100)
 
-    cy.url().should('eq', 'http://localhost:3000/')
+    cy.url().should('eq', `${Cypress.config('baseUrl')}/`)
     cy.contains('Увійти')
   })
 })
