@@ -3,9 +3,21 @@ import { api } from 'nodebook-api'
 import env from '@/lib/env'
 
 class BooksAPI {
-  async getAllBooks() {
+  async getAllBooks(filters?: {
+    name?: string
+    author?: string
+    minPages?: number
+    maxPages?: number
+    minRating?: number
+    maxRating?: number
+  }) {
+    const params = Object.entries(filters || {})
+      .filter(([value]) => value !== undefined)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+
     return await api.get('/books', {
       baseURL: env.API_URL,
+      params,
     })
   }
 

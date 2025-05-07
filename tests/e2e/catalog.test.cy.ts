@@ -17,9 +17,14 @@ describe('Catalog Page', () => {
     cy.get('[data-testid=title]').should('have.length.gt', 0)
   })
 
-  it('should filter books by search', () => {
-    cy.get('#search').type('Дюна')
+  it('should filter books by name', () => {
+    cy.get('#name').type('Дюна')
     cy.get('[data-testid=title]').should('contain', 'Дюна')
+  })
+
+  it('should filter books by author', () => {
+    cy.get('#author').type('Френк Герберт')
+    cy.get('[data-testid=title]').should('contain', 'Френк Герберт')
   })
 
   it('should filter books by category', () => {
@@ -44,13 +49,13 @@ describe('Catalog Page', () => {
   })
 
   it('should display "No books found" message when no results', () => {
-    cy.get('#search').type('NonexistentBook123456789')
+    cy.get('#name').type('NonexistentBook123456789')
     cy.wait(300)
     cy.contains('Книг не знайдено').should('be.visible')
   })
 
   it('should navigate to book details page', () => {
-    cy.get('#search').type('Собака')
+    cy.get('#name').type('Собака')
     cy.wait(600)
     cy.get('a').contains('Детальніше').first().click()
     cy.url().should('include', '/676c16fdbacc3dd34717d3d4')
@@ -65,7 +70,8 @@ describe('Catalog Page', () => {
     cy.get('[data-testid=rating-selector]').click({ force: true })
     cy.wait(100)
     cy.get('[data-testid=select-rating]').contains('5').click({ force: true })
-    cy.get('#search').type('Собака')
+    cy.get('#name').type('Собака')
+    cy.get('#author').type('Артур')
     cy.wait(500)
     cy.get('[data-testid=title]').should('have.length', 1)
 
@@ -79,7 +85,8 @@ describe('Catalog Page', () => {
     cy.get('[data-testid=select-rating]')
       .contains('Будь-який')
       .click({ force: true })
-    cy.get('#search').clear()
+    cy.get('#name').clear()
+    cy.get('#author').clear()
     cy.wait(500)
     cy.get('[data-testid=title]').should('have.length.gt', 5)
   })

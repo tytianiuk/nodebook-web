@@ -8,7 +8,7 @@ describe('Full User Journey', () => {
     cy.visit('/')
     cy.wait(100)
     cy.contains('h1', 'Каталог книг').should('be.visible')
-    cy.get('#search').type('Дюна')
+    cy.get('#name').type('Дюна')
     cy.wait(300)
     cy.get('a').contains('Детальніше').first().click()
     cy.wait(300)
@@ -48,7 +48,7 @@ describe('Full User Journey', () => {
     // go to CATALOG
     cy.contains('Успішно відправлено!').should('be.visible')
     cy.url().should('eq', 'http://localhost:3000/')
-    cy.get('#search').type('Дюна')
+    cy.get('#name').type('Дюна')
     cy.wait(300)
     cy.get('a').contains('Детальніше').first().click()
 

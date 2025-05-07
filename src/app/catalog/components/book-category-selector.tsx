@@ -22,6 +22,7 @@ const BooksCategorySelector = () => {
       const response = await CategoriesAPI.getAllCategories()
       return response.data as Category[]
     },
+    staleTime: 1000 * 60 * 60,
   })
 
   const handleCategoryChange = (categoryId: string) => {
