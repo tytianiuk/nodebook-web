@@ -1,50 +1,47 @@
-import { api } from 'nodebook-api'
-
-import env from '@/lib/env'
+import { httpClient } from '@/patterns/api/api-adapter'
 
 class BooksAPI {
-  async getAllBooks() {
-    return await api.get('/books', {
-      baseURL: env.API_URL,
-    })
+  async getAllBooks(filters?: {
+    name?: string
+    author?: string
+    minPages?: number
+    maxPages?: number
+    minRating?: number
+    maxRating?: number
+  }) {
+    const params = Object.entries(filters || {})
+      .filter(([, value]) => value !== undefined)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+
+    return await httpClient.get('/books', { params })
   }
 
   async getBookById(bookId: string) {
-    return await api.get(`/books/${bookId}`, {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.get(`/books/${bookId}`)
   }
 
   async addReview(bookId: string, review: { comment: string; rating: number }) {
-    return await api.post(`/books/${bookId}/review`, {
-      baseURL: env.API_URL,
+    return await httpClient.post(`/books/${bookId}/review`, {
       body: { review },
     })
   }
 
   async addComment(bookId: string, comment: string) {
-    return await api.post(`/books/${bookId}/comment`, {
-      baseURL: env.API_URL,
+    return await httpClient.post(`/books/${bookId}/comment`, {
       body: { comment },
     })
   }
 
   async likeBookById(bookId: string) {
-    return await api.post(`/books/${bookId}/like`, {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.post(`/books/${bookId}/like`)
   }
 
   async dislikeBookById(bookId: string) {
-    return await api.post(`/books/${bookId}/dislike`, {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.post(`/books/${bookId}/dislike`)
   }
 
   async getBooksLiked() {
-    return await api.get('/books/liked', {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.get('/books/liked')
   }
 }
 

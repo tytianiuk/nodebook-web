@@ -1,26 +1,20 @@
-import { api } from 'nodebook-api'
-
-import env from '@/lib/env'
+import { httpClient } from '@/patterns/api/api-adapter'
 
 class AuthAPI {
   async register(username: string, email: string, password: string) {
-    return await api.post('/auth/signup', {
-      baseURL: env.API_URL,
+    return await httpClient.post('/auth/signup', {
       body: { username, email, password },
     })
   }
 
   async login(email: string, password: string) {
-    return await api.post('/auth/login', {
-      baseURL: env.API_URL,
+    return await httpClient.post('/auth/login', {
       body: { email, password },
     })
   }
 
   async getMe() {
-    return await api.get('/users/me', {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.get('/users/me')
   }
 }
 

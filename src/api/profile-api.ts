@@ -1,23 +1,16 @@
-import { api } from 'nodebook-api'
-
-import env from '@/lib/env'
+import { httpClient } from '@/patterns/api/api-adapter'
 
 class ProfileAPI {
   async logout() {
-    return await api.post('/auth/logout', {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.post('/auth/logout')
   }
 
   async getLikedBooks() {
-    return await api.get('/books/liked', {
-      baseURL: env.API_URL,
-    })
+    return await httpClient.get('/books/liked')
   }
 
   async changePassword(password: string) {
-    return await api.patch('/users/me', {
-      baseURL: env.API_URL,
+    return await httpClient.patch('/users/me', {
       body: { password },
     })
   }
