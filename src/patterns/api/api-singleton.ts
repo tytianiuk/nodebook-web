@@ -1,4 +1,5 @@
 import { NodebookApiAdapter } from './api-adapter'
+import { ApiProxy } from './api-proxy'
 
 import type { ApiResponse, HttpClient, RequestOptions } from '@/lib/http-client'
 
@@ -7,6 +8,7 @@ const PRIVATE_CONSTRUCTOR = Symbol('ApiSingleton')
 export class ApiSingleton implements HttpClient {
   private static instance: ApiSingleton | null = null
   private adapter: HttpClient
+  private proxy: HttpClient
 
   private constructor(token: symbol, baseURL?: string) {
     if (token !== PRIVATE_CONSTRUCTOR) {
@@ -14,6 +16,8 @@ export class ApiSingleton implements HttpClient {
     }
 
     this.adapter = new NodebookApiAdapter(baseURL)
+
+    this.proxy = new ApiProxy(this.adapter)
   }
 
   public static getInstance(baseURL?: string): ApiSingleton {
@@ -31,35 +35,35 @@ export class ApiSingleton implements HttpClient {
     url: string,
     options?: RequestOptions,
   ): Promise<ApiResponse<T>> {
-    return await this.adapter.get<T>(url, options)
+    return await this.proxy.get<T>(url, options)
   }
 
   async post<T = unknown>(
     url: string,
     options?: RequestOptions,
   ): Promise<ApiResponse<T>> {
-    return await this.adapter.post<T>(url, options)
+    return await this.proxy.post<T>(url, options)
   }
 
   async patch<T = unknown>(
     url: string,
     options?: RequestOptions,
   ): Promise<ApiResponse<T>> {
-    return await this.adapter.patch<T>(url, options)
+    return await this.proxy.patch<T>(url, options)
   }
 
   async put<T = unknown>(
     url: string,
     options?: RequestOptions,
   ): Promise<ApiResponse<T>> {
-    return await this.adapter.put<T>(url, options)
+    return await this.proxy.put<T>(url, options)
   }
 
   async delete<T = unknown>(
     url: string,
     options?: RequestOptions,
   ): Promise<ApiResponse<T>> {
-    return await this.adapter.delete<T>(url, options)
+    return await this.proxy.delete<T>(url, options)
   }
 }
 

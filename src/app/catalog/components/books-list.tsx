@@ -29,7 +29,6 @@ const BooksList = ({ filters }: BooksListProps) => {
 
       return books
     },
-    staleTime: 1000 * 60 * 2,
   })
 
   return (
