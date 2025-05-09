@@ -1,20 +1,26 @@
-import { httpClient } from '@/patterns/api/api-adapter'
+import { BaseApi } from './base-api'
 
-class ProfileAPI {
-  async logout() {
-    return await httpClient.post('/auth/logout')
+import type { ApiResponse } from '@/lib/http-client'
+import type { Book } from '@/types/book'
+
+class ProfileAPI extends BaseApi<ProfileAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
   }
 
-  async getLikedBooks() {
-    return await httpClient.get('/books/liked')
+  async logout(): Promise<ApiResponse<unknown>> {
+    return await this.client.post('/auth/logout')
   }
 
-  async changePassword(password: string) {
-    return await httpClient.patch('/users/me', {
+  async getLikedBooks(): Promise<ApiResponse<Book[]>> {
+    return await this.client.get<Book[]>('/books/liked')
+  }
+
+  async changePassword(password: string): Promise<ApiResponse<unknown>> {
+    return await this.client.patch('/users/me', {
       body: { password },
     })
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new ProfileAPI()
+export default ProfileAPI.getInstance()

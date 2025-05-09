@@ -64,4 +64,4 @@ export class NodebookApiAdapter implements HttpClient {
   }
 }
 
-export const httpClient = new NodebookApiAdapter()
+export const apiAdapter = new NodebookApiAdapter()
