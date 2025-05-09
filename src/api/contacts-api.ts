@@ -1,12 +1,20 @@
-import { httpClient } from '@/patterns/api/api-adapter'
+import { BaseApi } from './base-api'
 
-class ContactsAPI {
-  async sendMessage(subject: string, content: string) {
-    return await httpClient.post('/users/message/support', {
+import type { ApiResponse } from '@/lib/http-client'
+
+class ContactsAPI extends BaseApi<ContactsAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
+  }
+
+  async sendMessage(
+    subject: string,
+    content: string,
+  ): Promise<ApiResponse<unknown>> {
+    return await this.client.post('/users/message/support', {
       body: { subject, content },
     })
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new ContactsAPI()
+export default ContactsAPI.getInstance()

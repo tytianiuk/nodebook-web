@@ -1,10 +1,16 @@
-import { httpClient } from '@/patterns/api/api-adapter'
+import { BaseApi } from './base-api'
 
-class CategoriesAPI {
-  async getAllCategories() {
-    return await httpClient.get('/categories')
+import type { ApiResponse } from '@/lib/http-client'
+import type { Category } from '@/types/categories'
+
+class CategoriesAPI extends BaseApi<CategoriesAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
+  }
+
+  async getAllCategories(): Promise<ApiResponse<Category[]>> {
+    return await this.client.get<Category[]>('/categories')
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new CategoriesAPI()
+export default CategoriesAPI.getInstance()
