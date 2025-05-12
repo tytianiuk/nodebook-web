@@ -25,7 +25,7 @@ class BooksAPI extends BaseApi<BooksAPI> {
     review: { comment: string; rating: number },
   ): Promise<ApiResponse<unknown>> {
     return await this.client.post(`/books/${bookId}/review`, {
-      body: { review },
+      body: review,
     })
   }
 

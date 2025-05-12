@@ -35,6 +35,24 @@ class ApiCache {
     }
   }
 
+  invalidateRelated(url: string): void {
+    const urlParts = url.split('/')
+    const resourceType = urlParts[1]
+
+    this.invalidate(new RegExp(`^GET:/${resourceType}`))
+
+    if (urlParts.length > 2) {
+      const resourceId = urlParts[2]
+      this.invalidate(new RegExp(`^GET:/${resourceType}/${resourceId}`))
+    }
+  }
+
+  invalidateUserRelated(): void {
+    this.invalidate(/^GET:\/users/)
+    this.invalidate(/^GET:\/books\/liked/)
+    this.invalidate(/^GET:\/auth/)
+  }
+
   clear(): void {
     this.cache.clear()
   }
@@ -106,7 +124,11 @@ export class ApiProxy implements HttpClient {
     try {
       const response = await this.target.post<T>(url, options)
 
-      this.cache.invalidate(new RegExp(`^GET:${url.split('/')[1]}`))
+      if (url === '/auth/logout') {
+        this.cache.invalidateUserRelated()
+      } else {
+        this.cache.invalidateRelated(url)
+      }
 
       return response
     } catch (error) {
@@ -123,7 +145,7 @@ export class ApiProxy implements HttpClient {
     try {
       const response = await this.target.patch<T>(url, options)
 
-      this.cache.invalidate(new RegExp(`^GET:${url.split('/')[1]}`))
+      this.cache.invalidateRelated(url)
 
       return response
     } catch (error) {
@@ -140,7 +162,7 @@ export class ApiProxy implements HttpClient {
     try {
       const response = await this.target.put<T>(url, options)
 
-      this.cache.invalidate(new RegExp(`^GET:${url.split('/')[1]}`))
+      this.cache.invalidateRelated(url)
 
       return response
     } catch (error) {
@@ -157,8 +179,7 @@ export class ApiProxy implements HttpClient {
     try {
       const response = await this.target.delete<T>(url, options)
 
-      // Invalidate cache for related resources
-      this.cache.invalidate(new RegExp(`^GET:${url.split('/')[1]}`))
+      this.cache.invalidateRelated(url)
 
       return response
     } catch (error) {
