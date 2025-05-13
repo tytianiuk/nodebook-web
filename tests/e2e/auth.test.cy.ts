@@ -34,7 +34,7 @@ describe('Authentication Page', () => {
 
       cy.wait(100)
 
-      cy.url().should('eq', 'http://localhost:3000/')
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/`)
       cy.contains('john_doe').should('be.visible')
     })
   })
@@ -84,7 +84,7 @@ describe('Authentication Page', () => {
 
       cy.wait(100)
 
-      cy.url().should('eq', 'http://localhost:3000/')
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/`)
 
       cy.contains('New User').should('be.visible')
     })
