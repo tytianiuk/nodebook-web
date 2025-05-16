@@ -10,8 +10,6 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress run\"",
-    "test:e2e:docker": "docker compose -f docker-compose.yml up --build --exit-code-from cypress",
     "test:all": "npm run test",
     "prepare": "husky install",
     "format": "prettier --write ."
