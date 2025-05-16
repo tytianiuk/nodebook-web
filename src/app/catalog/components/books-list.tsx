@@ -4,8 +4,7 @@ import { BookX } from 'lucide-react'
 
 import BooksAPI from '@/api/books-api'
 import BookCard from '@/app/catalog/components/book-card'
-import { Book, Filters } from '@/types/book'
-import { filterBooks } from '@/utils/book-utils'
+import type { Book, Filters } from '@/types/book'
 
 interface BooksListProps {
   filters: Filters
@@ -15,8 +14,20 @@ const BooksList = ({ filters }: BooksListProps) => {
   const { data: books = [] } = useSuspenseQuery<Book[]>({
     queryKey: ['catalog', filters],
     queryFn: async () => {
-      const data = await BooksAPI.getAllBooks()
-      return filterBooks(data.data as Book[], filters)
+      const apiFilters = {
+        name: filters.name,
+        author: filters.author,
+        minRating: filters.minRating ? Number(filters.minRating) : undefined,
+      }
+
+      const data = await BooksAPI.getAllBooks(apiFilters)
+      const books = data.data as Book[]
+
+      if (filters.category) {
+        return books.filter((book) => book.categoryId._id === filters.category)
+      }
+
+      return books
     },
   })
 

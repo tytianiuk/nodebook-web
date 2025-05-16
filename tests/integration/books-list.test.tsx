@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 
 import BooksList from '@/app/catalog/components/books-list'
 import '@testing-library/jest-dom'
-import { Book, Filters } from '@/types/book'
+import type { Book, Filters } from '@/types/book'
 
 jest.mock('@tanstack/react-query', () => ({
   useSuspenseQuery: jest.fn(),
@@ -42,7 +42,12 @@ describe('BooksList', () => {
     },
   ]
 
-  const filters: Filters = { search: 'Книга', category: '', minRating: 0 }
+  const filters: Filters = {
+    name: 'Книга',
+    author: '',
+    category: '',
+    minRating: 0,
+  }
 
   beforeEach(() => {
     ;(useSuspenseQuery as jest.Mock).mockReturnValue({
@@ -62,7 +67,8 @@ describe('BooksList', () => {
 
   it('should render the "no books found" message when no books match the filters', async () => {
     const noResultsFilters: Filters = {
-      search: 'Nonexistent',
+      name: 'Nonexistent',
+      author: '',
       category: '',
       minRating: 0,
     }
@@ -76,8 +82,9 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (name)', async () => {
-    const searchFilter: Filters = {
-      search: 'Книга 1',
+    const nameFilter: Filters = {
+      name: 'Книга 1',
+      author: '',
       category: '',
       minRating: 0,
     }
@@ -85,7 +92,7 @@ describe('BooksList', () => {
       data: [mockBooks[0]],
     })
 
-    render(<BooksList filters={searchFilter} />)
+    render(<BooksList filters={nameFilter} />)
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
@@ -95,8 +102,9 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (author)', async () => {
-    const searchFilter: Filters = {
-      search: 'Автор 2',
+    const authorFilter: Filters = {
+      name: '',
+      author: 'Автор 2',
       category: '',
       minRating: 0,
     }
@@ -104,7 +112,7 @@ describe('BooksList', () => {
       data: [mockBooks[1]],
     })
 
-    render(<BooksList filters={searchFilter} />)
+    render(<BooksList filters={authorFilter} />)
 
     await waitFor(() => {
       expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()
@@ -114,8 +122,9 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (category)', async () => {
-    const searchFilter: Filters = {
-      search: '',
+    const categoryFilter: Filters = {
+      name: '',
+      author: '',
       category: 'cat1',
       minRating: 0,
     }
@@ -123,7 +132,7 @@ describe('BooksList', () => {
       data: [mockBooks[0], mockBooks[2]],
     })
 
-    render(<BooksList filters={searchFilter} />)
+    render(<BooksList filters={categoryFilter} />)
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
@@ -133,8 +142,9 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (minRating)', async () => {
-    const searchFilter: Filters = {
-      search: '',
+    const ratingFilter: Filters = {
+      name: '',
+      author: '',
       category: '',
       minRating: 4,
     }
@@ -142,7 +152,7 @@ describe('BooksList', () => {
       data: [mockBooks[0], mockBooks[1]],
     })
 
-    render(<BooksList filters={searchFilter} />)
+    render(<BooksList filters={ratingFilter} />)
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
@@ -152,8 +162,9 @@ describe('BooksList', () => {
   })
 
   it('should display filtered books based on the provided filters (category & minRating)', async () => {
-    const searchFilter: Filters = {
-      search: '',
+    const combinedFilter: Filters = {
+      name: '',
+      author: '',
       category: 'cat1',
       minRating: 4,
     }
@@ -161,7 +172,7 @@ describe('BooksList', () => {
       data: [mockBooks[0]],
     })
 
-    render(<BooksList filters={searchFilter} />)
+    render(<BooksList filters={combinedFilter} />)
 
     await waitFor(() => {
       expect(screen.getByText('Книга 1')).toBeInTheDocument()
@@ -170,9 +181,30 @@ describe('BooksList', () => {
     })
   })
 
+  it('should display filtered books based on the provided filters (name & author)', async () => {
+    const nameAuthorFilter: Filters = {
+      name: 'Книга',
+      author: 'Автор 3',
+      category: '',
+      minRating: 0,
+    }
+    ;(useSuspenseQuery as jest.Mock).mockReturnValue({
+      data: [mockBooks[2]],
+    })
+
+    render(<BooksList filters={nameAuthorFilter} />)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()
+      expect(screen.queryByText('Книга 2')).not.toBeInTheDocument()
+      expect(screen.getByText('Книга 3')).toBeInTheDocument()
+    })
+  })
+
   it('should display filtered books based on the provided filters (all)', async () => {
-    const searchFilter: Filters = {
-      search: '3',
+    const allFilters: Filters = {
+      name: '3',
+      author: '3',
       category: 'cat1',
       minRating: 3,
     }
@@ -180,7 +212,7 @@ describe('BooksList', () => {
       data: [mockBooks[2]],
     })
 
-    render(<BooksList filters={searchFilter} />)
+    render(<BooksList filters={allFilters} />)
 
     await waitFor(() => {
       expect(screen.queryByText('Книга 1')).not.toBeInTheDocument()

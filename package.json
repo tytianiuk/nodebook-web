@@ -31,7 +31,7 @@
     "cypress": "^13.17.0",
     "lucide-react": "^0.460.0",
     "next": "14.2.15",
-    "nodebook-api": "^0.6.0",
+    "nodebook-api": "^0.7.0",
     "nuqs": "^2.2.3",
     "react": "^18",
     "react-dom": "^18",
