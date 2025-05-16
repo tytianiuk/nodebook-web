@@ -1,52 +1,54 @@
-import { api } from 'nodebook-api'
+import { BaseApi } from './base-api'
 
-import env from '@/lib/env'
+import type { ApiResponse } from '@/lib/http-client'
+import type { Book, Filters } from '@/types/book'
 
-class BooksAPI {
-  async getAllBooks() {
-    return await api.get('/books', {
-      baseURL: env.API_URL,
+class BooksAPI extends BaseApi<BooksAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
+  }
+
+  async getAllBooks(filters?: Filters): Promise<ApiResponse<Book[]>> {
+    const params = Object.entries(filters || {})
+      .filter(([, value]) => value !== undefined)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+
+    return await this.client.get<Book[]>('/books', { params })
+  }
+
+  async getBookById(bookId: string): Promise<ApiResponse<Book>> {
+    return await this.client.get<Book>(`/books/${bookId}`)
+  }
+
+  async addReview(
+    bookId: string,
+    review: { comment: string; rating: number },
+  ): Promise<ApiResponse<unknown>> {
+    return await this.client.post(`/books/${bookId}/review`, {
+      body: review,
     })
   }
 
-  async getBookById(bookId: string) {
-    return await api.get(`/books/${bookId}`, {
-      baseURL: env.API_URL,
-    })
-  }
-
-  async addReview(bookId: string, review: { comment: string; rating: number }) {
-    return await api.post(`/books/${bookId}/review`, {
-      baseURL: env.API_URL,
-      body: { review },
-    })
-  }
-
-  async addComment(bookId: string, comment: string) {
-    return await api.post(`/books/${bookId}/comment`, {
-      baseURL: env.API_URL,
+  async addComment(
+    bookId: string,
+    comment: string,
+  ): Promise<ApiResponse<unknown>> {
+    return await this.client.post(`/books/${bookId}/comment`, {
       body: { comment },
     })
   }
 
-  async likeBookById(bookId: string) {
-    return await api.post(`/books/${bookId}/like`, {
-      baseURL: env.API_URL,
-    })
+  async likeBookById(bookId: string): Promise<ApiResponse<unknown>> {
+    return await this.client.post(`/books/${bookId}/like`)
   }
 
-  async dislikeBookById(bookId: string) {
-    return await api.post(`/books/${bookId}/dislike`, {
-      baseURL: env.API_URL,
-    })
+  async dislikeBookById(bookId: string): Promise<ApiResponse<unknown>> {
+    return await this.client.post(`/books/${bookId}/dislike`)
   }
 
-  async getBooksLiked() {
-    return await api.get('/books/liked', {
-      baseURL: env.API_URL,
-    })
+  async getBooksLiked(): Promise<ApiResponse<Book[]>> {
+    return await this.client.get<Book[]>('/books/liked')
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new BooksAPI()
+export default BooksAPI.getInstance()

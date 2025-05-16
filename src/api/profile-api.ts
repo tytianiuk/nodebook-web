@@ -1,27 +1,26 @@
-import { api } from 'nodebook-api'
+import { BaseApi } from './base-api'
 
-import env from '@/lib/env'
+import type { ApiResponse } from '@/lib/http-client'
+import type { Book } from '@/types/book'
 
-class ProfileAPI {
-  async logout() {
-    return await api.post('/auth/logout', {
-      baseURL: env.API_URL,
-    })
+class ProfileAPI extends BaseApi<ProfileAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
   }
 
-  async getLikedBooks() {
-    return await api.get('/books/liked', {
-      baseURL: env.API_URL,
-    })
+  async logout(): Promise<ApiResponse<unknown>> {
+    return await this.client.post('/auth/logout')
   }
 
-  async changePassword(password: string) {
-    return await api.patch('/users/me', {
-      baseURL: env.API_URL,
+  async getLikedBooks(): Promise<ApiResponse<Book[]>> {
+    return await this.client.get<Book[]>('/books/liked')
+  }
+
+  async changePassword(password: string): Promise<ApiResponse<unknown>> {
+    return await this.client.patch('/users/me', {
       body: { password },
     })
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new ProfileAPI()
+export default ProfileAPI.getInstance()

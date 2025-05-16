@@ -15,7 +15,8 @@ export type Book = {
 }
 
 export interface Filters {
-  search?: string
+  name?: string
+  author?: string
   category?: string
   minRating?: number
 }

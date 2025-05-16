@@ -1,14 +1,16 @@
-import { api } from 'nodebook-api'
+import { BaseApi } from './base-api'
 
-import env from '@/lib/env'
+import type { ApiResponse } from '@/lib/http-client'
+import type { Category } from '@/types/categories'
 
-class CategoriesAPI {
-  async getAllCategories() {
-    return await api.get('/categories', {
-      baseURL: env.API_URL,
-    })
+class CategoriesAPI extends BaseApi<CategoriesAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
+  }
+
+  async getAllCategories(): Promise<ApiResponse<Category[]>> {
+    return await this.client.get<Category[]>('/categories')
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new CategoriesAPI()
+export default CategoriesAPI.getInstance()

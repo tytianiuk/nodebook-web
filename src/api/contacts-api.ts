@@ -1,15 +1,20 @@
-import { api } from 'nodebook-api'
+import { BaseApi } from './base-api'
 
-import env from '@/lib/env'
+import type { ApiResponse } from '@/lib/http-client'
 
-class ContactsAPI {
-  async sendMessage(subject: string, content: string) {
-    return await api.post('/users/message/support', {
-      baseURL: env.API_URL,
+class ContactsAPI extends BaseApi<ContactsAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
+  }
+
+  async sendMessage(
+    subject: string,
+    content: string,
+  ): Promise<ApiResponse<unknown>> {
+    return await this.client.post('/users/message/support', {
       body: { subject, content },
     })
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new ContactsAPI()
+export default ContactsAPI.getInstance()

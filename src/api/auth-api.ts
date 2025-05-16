@@ -1,28 +1,38 @@
-import { api } from 'nodebook-api'
+import { BaseApi } from './base-api'
 
-import env from '@/lib/env'
+import type { ApiResponse } from '@/lib/http-client'
+import type { User } from '@/types/user'
 
-class AuthAPI {
-  async register(username: string, email: string, password: string) {
-    return await api.post('/auth/signup', {
-      baseURL: env.API_URL,
+class AuthAPI extends BaseApi<AuthAPI> {
+  constructor(constructorToken?: symbol) {
+    super(constructorToken)
+  }
+
+  async register(
+    username: string,
+    email: string,
+    password: string,
+  ): Promise<ApiResponse<User>> {
+    return await this.client.post<User>('/auth/signup', {
       body: { username, email, password },
     })
   }
 
-  async login(email: string, password: string) {
-    return await api.post('/auth/login', {
-      baseURL: env.API_URL,
-      body: { email, password },
-    })
+  async login(
+    email: string,
+    password: string,
+  ): Promise<ApiResponse<{ token: string; user: User }>> {
+    return await this.client.post<{ token: string; user: User }>(
+      '/auth/login',
+      {
+        body: { email, password },
+      },
+    )
   }
 
-  async getMe() {
-    return await api.get('/users/me', {
-      baseURL: env.API_URL,
-    })
+  async getMe(): Promise<ApiResponse<User>> {
+    return await this.client.get<User>('/users/me')
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new AuthAPI()
+export default AuthAPI.getInstance()
