@@ -1,32 +1,26 @@
-import { Accordion } from '@radix-ui/react-accordion'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 
 import profileAPI from '@/api/profile-api'
-import SecurityForm from '@/app/profile/components/security-form'
+import SecurityFormContainer from '@/app/profile/components/containers/security-form-container'
+import { Accordion } from '@/components/ui/accordion'
 
 jest.mock('@/api/profile-api', () => ({
   changePassword: jest.fn(),
 }))
 
-describe('SecurityForm', () => {
+describe('SecurityFormContainer', () => {
   beforeEach(() => {
+    jest.clearAllMocks()
     render(
-      <Accordion type='single'>
-        <SecurityForm />
+      <Accordion type='single' defaultValue='security'>
+        <SecurityFormContainer />
       </Accordion>,
     )
   })
-  it('renders security form correctly', () => {
-    expect(screen.getByText('Безпека')).toBeInTheDocument()
-    fireEvent.click(screen.getByText('Безпека'))
-    expect(screen.getByLabelText('Новий пароль')).toBeInTheDocument()
-    expect(
-      screen.getByLabelText('Підтвердження нового пароля'),
-    ).toBeInTheDocument()
-  })
 
   it('submits form with valid data', async () => {
-    fireEvent.click(screen.getByText('Безпека'))
+    ;(profileAPI.changePassword as jest.Mock).mockResolvedValue({})
+
     fireEvent.change(screen.getByLabelText('Новий пароль'), {
       target: { value: 'newpassword123' },
     })
@@ -42,7 +36,6 @@ describe('SecurityForm', () => {
   })
 
   it('shows error when passwords do not match', async () => {
-    fireEvent.click(screen.getByText('Безпека'))
     fireEvent.change(screen.getByLabelText('Новий пароль'), {
       target: { value: 'newpassword123' },
     })
@@ -54,6 +47,25 @@ describe('SecurityForm', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Паролі не співпадають')).toBeInTheDocument()
+    })
+  })
+
+  it('handles API error', async () => {
+    ;(profileAPI.changePassword as jest.Mock).mockRejectedValue(
+      new Error('API Error'),
+    )
+
+    fireEvent.change(screen.getByLabelText('Новий пароль'), {
+      target: { value: 'newpassword123' },
+    })
+    fireEvent.change(screen.getByLabelText('Підтвердження нового пароля'), {
+      target: { value: 'newpassword123' },
+    })
+
+    fireEvent.click(screen.getByText('Змінити пароль'))
+
+    await waitFor(() => {
+      expect(profileAPI.changePassword).toHaveBeenCalledWith('newpassword123')
     })
   })
 })

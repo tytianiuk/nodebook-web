@@ -1,10 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 
 import profileAPI from '@/api/profile-api'
-import ProfileCard from '@/app/profile/components/profile-card'
-import { User } from '@/types/user'
+import ProfileCardContainer from '@/app/profile/components/containers/profile-card-container'
+import type { User } from '@/types/user'
 
-// Мокуємо next/navigation
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     replace: jest.fn(),
@@ -28,18 +27,20 @@ const mockUser: User = {
   email: 'test@example.com',
 }
 
-describe('ProfileCard', () => {
-  beforeEach(() => {})
+describe('ProfileCardContainer', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
   it('renders user information correctly', () => {
-    render(<ProfileCard user={mockUser} />)
+    render(<ProfileCardContainer user={mockUser} />)
 
     expect(screen.getByText(mockUser.username)).toBeInTheDocument()
     expect(screen.getByText(mockUser.email)).toBeInTheDocument()
   })
 
   it('opens logout dialog when logout button is clicked', () => {
-    render(<ProfileCard user={mockUser} />)
+    render(<ProfileCardContainer user={mockUser} />)
 
     const logoutButton = screen.getByText('Вийти з профілю')
     fireEvent.click(logoutButton)
@@ -48,7 +49,7 @@ describe('ProfileCard', () => {
   })
 
   it('calls logout function when confirmed', async () => {
-    render(<ProfileCard user={mockUser} />)
+    render(<ProfileCardContainer user={mockUser} />)
 
     const logoutButton = screen.getByText('Вийти з профілю')
     fireEvent.click(logoutButton)
