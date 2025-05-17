@@ -1,9 +1,11 @@
 'use client'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { BookX } from 'lucide-react'
+import { useState } from 'react'
 
 import BooksAPI from '@/api/books-api'
 import BookCard from '@/app/catalog/components/book-card'
+import { FilterContext } from '@/patterns/strategy/filter-strategies'
 import type { Book, Filters } from '@/types/book'
 
 interface BooksListProps {
@@ -11,6 +13,8 @@ interface BooksListProps {
 }
 
 const BooksList = ({ filters }: BooksListProps) => {
+  const [filterContext] = useState(() => new FilterContext())
+
   const { data: books = [] } = useSuspenseQuery<Book[]>({
     queryKey: ['catalog', filters],
     queryFn: async () => {
@@ -23,11 +27,7 @@ const BooksList = ({ filters }: BooksListProps) => {
       const data = await BooksAPI.getAllBooks(apiFilters)
       const books = data.data as Book[]
 
-      if (filters.category) {
-        return books.filter((book) => book.categoryId._id === filters.category)
-      }
-
-      return books
+      return filterContext.applyFilters(books, { category: filters.category })
     },
   })
 
