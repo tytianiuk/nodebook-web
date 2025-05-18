@@ -7,6 +7,7 @@ import BooksAPI from '@/api/books-api'
 import { Button } from '@/components/ui/button'
 import { CardFooter } from '@/components/ui/card'
 import useUserStore from '@/hooks/store/use-user-store'
+import { interactionContext } from '@/patterns/strategy/book-interaction-strategies'
 import { Book } from '@/types/book'
 
 interface BookLikeButtonProps {
@@ -31,12 +32,13 @@ const BookLikeButton = ({ book }: BookLikeButtonProps) => {
   }, [user, book._id])
 
   const handleLikeToggle = async () => {
-    if (isLiked) {
-      await BooksAPI.dislikeBookById(book._id)
-    } else {
-      await BooksAPI.likeBookById(book._id)
+    try {
+      await interactionContext.executeStrategy('like', book._id, isLiked)
+
+      setIsLiked(!isLiked)
+    } catch (error) {
+      console.error('Error toggling like:', error)
     }
-    setIsLiked(!isLiked)
   }
 
   if (!user) return null

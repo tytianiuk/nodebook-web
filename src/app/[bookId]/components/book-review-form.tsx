@@ -3,10 +3,10 @@
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 
-import BooksAPI from '@/api/books-api'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import useUserStore from '@/hooks/store/use-user-store'
+import { interactionContext } from '@/patterns/strategy/book-interaction-strategies'
 
 interface BookReviewFormProps {
   bookId: string
@@ -38,13 +38,13 @@ const BookReviewForm = ({
 
   const onSubmit = async (data: { content: string; rating: number }) => {
     if (!user) return
-    const review = {
-      comment: data.content,
-      rating: data.rating,
-    }
 
     try {
-      await BooksAPI.addReview(bookId, review)
+      await interactionContext.executeStrategy('review', bookId, {
+        comment: data.content,
+        rating: data.rating,
+      })
+
       updateBook()
     } catch (error) {
       console.error('Error adding review:', error)

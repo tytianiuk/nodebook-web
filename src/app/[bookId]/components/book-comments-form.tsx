@@ -3,10 +3,10 @@
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 
-import BooksAPI from '@/api/books-api'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import useUserStore from '@/hooks/store/use-user-store'
+import { interactionContext } from '@/patterns/strategy/book-interaction-strategies'
 
 interface BookCommentsFormProps {
   bookId: string
@@ -31,10 +31,9 @@ const BookCommentsForm = ({
   const allFieldsFilled = allFields.content.trim() !== ''
 
   const onSubmit = async (data: { content: string }) => {
-    const comment = data.content
-
     try {
-      await BooksAPI.addComment(bookId, comment)
+      await interactionContext.executeStrategy('comment', bookId, data)
+
       updateBook()
     } catch (error) {
       console.error('Error adding comment:', error)
