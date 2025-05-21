@@ -4,24 +4,22 @@ import { useForm } from 'react-hook-form'
 
 import {
   signUpDefaultValues,
-  RegisterFormValues,
+  type RegisterFormValues,
   registerSchema,
 } from '../constants'
 
-import AuthAPI from '@/api/auth-api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
-import { User } from '@/types/user'
+import { AuthChain } from '@/patterns/chain-of-responsibility/auth-chain'
 
 const SignUpForm = () => {
-  const { replace } = useRouter()
+  const router = useRouter()
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -30,27 +28,17 @@ const SignUpForm = () => {
   const { setUser } = useUserStore((state) => state)
   const { toast } = useToast()
 
-  const allFields = watch()
-
-  const allFieldsFilled = Object.values(allFields).every((value) => value)
-
   const handleRegister = async (data: RegisterFormValues) => {
-    const { username, password, email } = data
-    try {
-      const res = await AuthAPI.register(username, email, password)
+    const authChain = new AuthChain(true)
+    const response = await authChain.process(data)
 
-      if (res.status === 201) {
-        await AuthAPI.login(email, password)
-        const response = await AuthAPI.getMe()
-        const user = response.data as User
-        setUser(user)
-        replace(Routes.CATALOG)
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch {
+    if (response.success && response.user) {
+      setUser(response.user)
+      router.replace(Routes.CATALOG)
+    } else if (response.error) {
       toast({
-        title: 'Помилка при вході',
-        description: 'До цієї пошти вже прив`язаний обліковий запис',
+        title: 'Помилка при реєстрації',
+        description: response.error,
         variant: 'destructive',
       })
     }
@@ -67,16 +55,14 @@ const SignUpForm = () => {
         id='username'
         placeholder='Іван Петренко'
         error={errors.username?.message}
-        required
         {...register('username')}
       />
       <Input
         label='Email'
         id='email'
-        type='email'
+        type='text'
         placeholder='your@email.com'
         error={errors.email?.message}
-        required
         {...register('email')}
       />
       <Input
@@ -85,7 +71,6 @@ const SignUpForm = () => {
         type='password'
         placeholder='••••••••'
         error={errors.password?.message}
-        required
         {...register('password')}
       />
       <Input
@@ -94,11 +79,9 @@ const SignUpForm = () => {
         type='password'
         placeholder='••••••••'
         error={errors.confirmPassword?.message}
-        required
         {...register('confirmPassword')}
       />
       <Button
-        disabled={!allFieldsFilled}
         isLoading={isSubmitting}
         type='submit'
         className='w-full'

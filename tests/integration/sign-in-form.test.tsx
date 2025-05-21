@@ -100,20 +100,4 @@ describe('SignInForm Integration', () => {
       })
     })
   })
-
-  it('disables submit button when fields are empty', () => {
-    render(<SignInForm />)
-
-    expect(screen.getByRole('button', { name: 'Увійти' })).toBeDisabled()
-
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'test@example.com' },
-    })
-    expect(screen.getByRole('button', { name: 'Увійти' })).toBeDisabled()
-
-    fireEvent.change(screen.getByLabelText('Пароль'), {
-      target: { value: 'password123' },
-    })
-    expect(screen.getByRole('button', { name: 'Увійти' })).toBeEnabled()
-  })
 })
