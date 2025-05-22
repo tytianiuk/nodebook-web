@@ -14,7 +14,7 @@ describe('SignInForm', () => {
   })
 
   it('renders all required fields and submit button', () => {
-    expect(screen.getByLabelText('Email')).toBeInTheDocument()
+    expect(screen.getByLabelText('Пошта')).toBeInTheDocument()
     expect(screen.getByLabelText('Пароль')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Увійти' })).toBeInTheDocument()
   })
