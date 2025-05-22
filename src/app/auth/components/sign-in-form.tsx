@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
-import { DefaultFormFieldFactory } from '@/patterns/abstract-factory/form-field-factory'
+import { IconFormFieldFactory } from '@/patterns/abstract-factory/icon-form-field-factory'
 import { AuthChain } from '@/patterns/chain-of-responsibility/auth-chain'
 
 const SignInForm = () => {
@@ -22,7 +22,7 @@ const SignInForm = () => {
     defaultValues: signInDefaultValues,
   })
 
-  const formFieldFactory = new DefaultFormFieldFactory()
+  const formFieldFactory = new IconFormFieldFactory()
 
   const emailField = formFieldFactory.createEmailField()
   const passwordField = formFieldFactory.createPasswordField()
