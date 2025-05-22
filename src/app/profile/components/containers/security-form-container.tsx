@@ -8,6 +8,7 @@ import SecurityFormView from '../presentational/security-form-view'
 
 import profileAPI from '@/api/profile-api'
 import { useToast } from '@/hooks/use-toast'
+import { DefaultFormFieldFactory } from '@/patterns/abstract-factory/form-field-factory'
 
 const SecurityFormContainer = () => {
   const { toast } = useToast()
@@ -25,6 +26,10 @@ const SecurityFormContainer = () => {
   const allFields = watch()
   const allFieldsFilled =
     allFields && Object.values(allFields).every((value) => value)
+
+  const formFieldFactory = new DefaultFormFieldFactory()
+
+  const passwordField = formFieldFactory.createPasswordField()
 
   const onSubmit: SubmitHandler<PasswordData> = async (data: PasswordData) => {
     const { newPassword } = data
@@ -53,6 +58,7 @@ const SecurityFormContainer = () => {
       errors={errors}
       isSubmitting={isSubmitting}
       allFieldsFilled={allFieldsFilled}
+      passwordField={passwordField}
     />
   )
 }

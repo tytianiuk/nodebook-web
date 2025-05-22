@@ -14,8 +14,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { passwordFormFields } from '@/constants/password-form-fields'
+import { FormField } from '@/patterns/abstract-factory/form-field-interfaces'
 
 interface SecurityFormViewProps {
   register: UseFormRegister<PasswordData>
@@ -24,6 +23,7 @@ interface SecurityFormViewProps {
   errors: FieldErrors<PasswordData>
   isSubmitting: boolean
   allFieldsFilled: boolean
+  passwordField: FormField
 }
 
 const SecurityFormView = ({
@@ -33,6 +33,7 @@ const SecurityFormView = ({
   errors,
   isSubmitting,
   allFieldsFilled,
+  passwordField,
 }: SecurityFormViewProps) => {
   return (
     <AccordionItem value='security'>
@@ -43,17 +44,18 @@ const SecurityFormView = ({
           className='space-y-4 px-2'
           role='form'
         >
-          {passwordFormFields.map((field) => (
-            <Input
-              label={field.label}
-              id={field.label}
-              key={field.id}
-              type={field.type}
-              required={field.required}
-              error={errors[field.id]?.message}
-              {...register(field.id)}
-            />
-          ))}
+          {passwordField.render({
+            label: 'Новий пароль',
+            registration: register('newPassword'),
+            error: errors.newPassword?.message,
+          })}
+
+          {passwordField.render({
+            id: 'confirm-password',
+            label: 'Підтвердження нового пароля',
+            registration: register('confirmPassword'),
+            error: errors.confirmPassword?.message,
+          })}
           <Button
             type='submit'
             disabled={isSubmitting || !allFieldsFilled}
