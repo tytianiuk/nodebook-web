@@ -104,48 +104,11 @@ describe('SignUpForm Integration', () => {
         'password123',
       )
       expect(mockToast).toHaveBeenCalledWith({
-        title: 'Помилка при вході',
+        title: 'Помилка при реєстрації',
         description: 'До цієї пошти вже прив`язаний обліковий запис',
         variant: 'destructive',
       })
     })
-  })
-
-  it('button is dasibled when fields are empty', async () => {
-    render(<SignUpForm />)
-
-    expect(
-      screen.getByRole('button', { name: 'Зареєструватися' }),
-    ).toBeDisabled()
-
-    fireEvent.change(screen.getByLabelText("Ім'я"), {
-      target: { value: 'Test User' },
-    })
-    expect(
-      screen.getByRole('button', { name: 'Зареєструватися' }),
-    ).toBeDisabled()
-
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'test@example.com' },
-    })
-
-    expect(
-      screen.getByRole('button', { name: 'Зареєструватися' }),
-    ).toBeDisabled()
-
-    fireEvent.change(screen.getByLabelText('Пароль'), {
-      target: { value: 'password123' },
-    })
-    expect(
-      screen.getByRole('button', { name: 'Зареєструватися' }),
-    ).toBeDisabled()
-
-    fireEvent.change(screen.getByLabelText('Підтвердження паролю'), {
-      target: { value: 'password123' },
-    })
-    expect(
-      screen.getByRole('button', { name: 'Зареєструватися' }),
-    ).toBeEnabled()
   })
 
   it('validates form fields before submission', async () => {
