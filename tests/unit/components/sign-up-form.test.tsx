@@ -15,7 +15,7 @@ describe('SignUpForm', () => {
 
   it('renders all required fields and submit button', () => {
     expect(screen.getByLabelText("Ім'я")).toBeInTheDocument()
-    expect(screen.getByLabelText('Email')).toBeInTheDocument()
+    expect(screen.getByLabelText('Пошта')).toBeInTheDocument()
     expect(screen.getByLabelText('Пароль')).toBeInTheDocument()
     expect(screen.getByLabelText('Підтвердження паролю')).toBeInTheDocument()
     expect(

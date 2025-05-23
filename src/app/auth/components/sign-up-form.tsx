@@ -9,10 +9,10 @@ import {
 } from '../constants'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
+import { DefaultFormFieldFactory } from '@/patterns/abstract-factory/form-field-factory'
 import { AuthChain } from '@/patterns/chain-of-responsibility/auth-chain'
 
 const SignUpForm = () => {
@@ -27,6 +27,12 @@ const SignUpForm = () => {
   })
   const { setUser } = useUserStore((state) => state)
   const { toast } = useToast()
+
+  const formFieldFactory = new DefaultFormFieldFactory()
+
+  const usernameField = formFieldFactory.createUserNameField()
+  const emailField = formFieldFactory.createEmailField()
+  const passwordField = formFieldFactory.createPasswordField()
 
   const handleRegister = async (data: RegisterFormValues) => {
     const authChain = new AuthChain(true)
@@ -50,37 +56,27 @@ const SignUpForm = () => {
       className='space-y-4'
       role='form'
     >
-      <Input
-        label="Ім'я"
-        id='username'
-        placeholder='Іван Петренко'
-        error={errors.username?.message}
-        {...register('username')}
-      />
-      <Input
-        label='Email'
-        id='email'
-        type='text'
-        placeholder='your@email.com'
-        error={errors.email?.message}
-        {...register('email')}
-      />
-      <Input
-        label='Пароль'
-        id='password'
-        type='password'
-        placeholder='••••••••'
-        error={errors.password?.message}
-        {...register('password')}
-      />
-      <Input
-        label='Підтвердження паролю'
-        id='confirm-password'
-        type='password'
-        placeholder='••••••••'
-        error={errors.confirmPassword?.message}
-        {...register('confirmPassword')}
-      />
+      {usernameField.render({
+        registration: register('username'),
+        error: errors.username?.message,
+      })}
+
+      {emailField.render({
+        registration: register('email'),
+        error: errors.email?.message,
+      })}
+
+      {passwordField.render({
+        registration: register('password'),
+        error: errors.password?.message,
+      })}
+
+      {passwordField.render({
+        id: 'confirm-password',
+        label: 'Підтвердження паролю',
+        registration: register('confirmPassword'),
+        error: errors.confirmPassword?.message,
+      })}
       <Button
         isLoading={isSubmitting}
         type='submit'

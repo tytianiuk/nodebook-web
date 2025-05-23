@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 
 import SecurityFormView from '@/app/profile/components/presentational/security-form-view'
 import { Accordion } from '@/components/ui/accordion'
+import { DefaultFormFieldFactory } from '@/patterns/abstract-factory/form-field-factory'
 
 describe('SecurityFormView', () => {
   const mockProps = {
@@ -16,6 +17,7 @@ describe('SecurityFormView', () => {
     errors: {},
     isSubmitting: false,
     allFieldsFilled: true,
+    passwordField: new DefaultFormFieldFactory().createPasswordField(),
   }
 
   beforeEach(() => {

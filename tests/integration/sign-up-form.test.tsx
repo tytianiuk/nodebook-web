@@ -44,7 +44,7 @@ describe('SignUpForm Integration', () => {
     fireEvent.change(screen.getByLabelText("Ім'я"), {
       target: { value: 'Test User' },
     })
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Пошта'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Пароль'), {
@@ -85,7 +85,7 @@ describe('SignUpForm Integration', () => {
     fireEvent.change(screen.getByLabelText("Ім'я"), {
       target: { value: 'Test User' },
     })
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Пошта'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Пароль'), {
@@ -117,7 +117,7 @@ describe('SignUpForm Integration', () => {
     fireEvent.change(screen.getByLabelText("Ім'я"), {
       target: { value: 'Test User' },
     })
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Пошта'), {
       target: { value: 'test@t.t' },
     })
     fireEvent.change(screen.getByLabelText('Пароль'), {
@@ -141,7 +141,7 @@ describe('SignUpForm Integration', () => {
     fireEvent.change(screen.getByLabelText("Ім'я"), {
       target: { value: 'Test User' },
     })
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Пошта'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Пароль'), {

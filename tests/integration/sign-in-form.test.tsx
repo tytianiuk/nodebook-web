@@ -49,7 +49,7 @@ describe('SignInForm Integration', () => {
 
     render(<SignInForm />)
 
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Пошта'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Пароль'), {
@@ -78,7 +78,7 @@ describe('SignInForm Integration', () => {
 
     render(<SignInForm />)
 
-    fireEvent.change(screen.getByLabelText('Email'), {
+    fireEvent.change(screen.getByLabelText('Пошта'), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText('Пароль'), {
