@@ -1,5 +1,5 @@
 import type { HttpClient } from '@/lib/http-client'
-import { apiSingleton } from '@/patterns/api/api-singleton'
+import { apiSingleton } from '@/patterns/singleton/api-singleton'
 
 const PRIVATE_CONSTRUCTOR = Symbol('privateConstructor')
 

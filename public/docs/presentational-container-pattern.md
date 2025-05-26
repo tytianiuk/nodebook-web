@@ -1,4 +1,4 @@
-# **Container/Presentational Pattern**🛡️ | [profile-page з кодом](../../src/app/profile/components/)
+# **Container/Presentational Pattern**📦👩‍🏫 | [profile-page з кодом](../../src/app/profile/components/)
 
 ## Контекст проблеми 📝
 

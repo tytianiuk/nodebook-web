@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
@@ -69,59 +71,80 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout)
 }
 
-export const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case 'ADD_TOAST':
-      return {
-        ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
-      }
+// Окремі функції для кожного типу дії
+const addToastHandler = (
+  state: State,
+  action: Extract<Action, { type: 'ADD_TOAST' }>,
+): State => ({
+  ...state,
+  toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+})
 
-    case 'UPDATE_TOAST':
-      return {
-        ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === action.toast.id ? { ...t, ...action.toast } : t,
-        ),
-      }
+const updateToastHandler = (
+  state: State,
+  action: Extract<Action, { type: 'UPDATE_TOAST' }>,
+): State => ({
+  ...state,
+  toasts: state.toasts.map((t) =>
+    t.id === action.toast.id ? { ...t, ...action.toast } : t,
+  ),
+})
 
-    case 'DISMISS_TOAST': {
-      const { toastId } = action
+const dismissToastHandler = (
+  state: State,
+  action: Extract<Action, { type: 'DISMISS_TOAST' }>,
+): State => {
+  const { toastId } = action
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
-      if (toastId) {
-        addToRemoveQueue(toastId)
-      } else {
-        state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id)
-        })
-      }
-
-      return {
-        ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === toastId || toastId === undefined
-            ? {
-                ...t,
-                open: false,
-              }
-            : t,
-        ),
-      }
-    }
-    case 'REMOVE_TOAST':
-      if (action.toastId === undefined) {
-        return {
-          ...state,
-          toasts: [],
-        }
-      }
-      return {
-        ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId),
-      }
+  // ! Side effects ! - This could be extracted into a dismissToast() action,
+  // but I'll keep it here for simplicity
+  if (toastId) {
+    addToRemoveQueue(toastId)
+  } else {
+    state.toasts.forEach((toast) => {
+      addToRemoveQueue(toast.id)
+    })
   }
+
+  return {
+    ...state,
+    toasts: state.toasts.map((t) =>
+      t.id === toastId || toastId === undefined
+        ? {
+            ...t,
+            open: false,
+          }
+        : t,
+    ),
+  }
+}
+
+const removeToastHandler = (
+  state: State,
+  action: Extract<Action, { type: 'REMOVE_TOAST' }>,
+): State => {
+  if (action.toastId === undefined) {
+    return {
+      ...state,
+      toasts: [],
+    }
+  }
+  return {
+    ...state,
+    toasts: state.toasts.filter((t) => t.id !== action.toastId),
+  }
+}
+
+const actionHandlers = {
+  ADD_TOAST: addToastHandler,
+  UPDATE_TOAST: updateToastHandler,
+  DISMISS_TOAST: dismissToastHandler,
+  REMOVE_TOAST: removeToastHandler,
+} as const
+
+export const reducer = (state: State, action: Action): State => {
+  const handler = actionHandlers[action.type]
+  return handler(state, action as never)
 }
 
 const listeners: Array<(state: State) => void> = []

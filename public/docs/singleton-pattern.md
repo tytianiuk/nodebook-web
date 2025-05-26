@@ -1,4 +1,4 @@
-# **Singleton Pattern**♻️ | [singleton з кодом](../../src/patterns/api/api-proxy.ts)
+# **Singleton Pattern**☝️ | [singleton з кодом](../../src/patterns/singleton/api-singleton.ts)
 
 ## Контекст проблеми 📝
 

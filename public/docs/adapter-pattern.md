@@ -1,4 +1,4 @@
-# **Adapter Pattern**🔌 | [api-adapter з кодом](../../src/patterns/api/api-adapter.ts)
+# **Adapter Pattern**🔌 | [api-adapter з кодом](../../src/patterns/adapter/api-adapter.ts)
 
 ## Контекст проблеми 📝
 
