@@ -1,7 +1,6 @@
-import { NodebookApiAdapter } from './api-adapter'
-import { ApiProxy } from './api-proxy'
-
 import type { ApiResponse, HttpClient, RequestOptions } from '@/lib/http-client'
+import { NodebookApiAdapter } from '@/patterns/adapter/api-adapter'
+import { ApiProxy } from '@/patterns/proxy/api-proxy'
 
 const PRIVATE_CONSTRUCTOR = Symbol('ApiSingleton')
 

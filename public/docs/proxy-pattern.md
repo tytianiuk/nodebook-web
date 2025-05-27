@@ -1,4 +1,4 @@
-# **Proxy Pattern**🛡️ | [api-proxy з кодом](../../src/patterns/api/api-proxy.ts)
+# **Proxy Pattern**🛡️ | [api-proxy з кодом](../../src/patterns/proxy/api-proxy.ts)
 
 ## Контекст проблеми 📝
 
