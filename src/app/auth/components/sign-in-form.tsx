@@ -8,7 +8,8 @@ import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
 import { IconFormFieldFactory } from '@/patterns/abstract-factory/icon-form-field-factory'
-import { AuthChain } from '@/patterns/chain-of-responsibility/auth-chain'
+import { LoginHandler } from '@/patterns/chain-of-responsibility/handlers/login-handler'
+import { LoginValidationHandler } from '@/patterns/chain-of-responsibility/handlers/login-validation-handler'
 
 const SignInForm = () => {
   const { toast } = useToast()
@@ -28,8 +29,8 @@ const SignInForm = () => {
   const passwordField = formFieldFactory.createPasswordField()
 
   const handleLogin = async (data: LoginFormValues) => {
-    const authChain = new AuthChain(false)
-    const response = await authChain.process(data)
+    const handler = new LoginValidationHandler().setNext(new LoginHandler())
+    const response = await handler.handle(data)
 
     if (response.success && response.user) {
       setUser(response.user)

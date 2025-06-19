@@ -1,23 +1,24 @@
 import type { AuthRequest, AuthResponse } from '../auth-types'
-import { LoginValidationService } from '../services/login-validation-service'
 
 import { AuthHandler } from './base-handler'
 
+import { AuthResponseHelper } from '@/utils/auth-response-utils'
+
 export class LoginValidationHandler extends AuthHandler {
-  private validationService: LoginValidationService
-
-  constructor() {
-    super()
-    this.validationService = new LoginValidationService()
-  }
-
   public async handle(request: AuthRequest): Promise<AuthResponse> {
-    const validationError = this.validationService.validate(request)
+    if (!request.email || !request.password) {
+      return AuthResponseHelper.error('Заповніть усі поля')
+    }
 
-    if (validationError) {
-      return validationError
+    if (!this.isValidEmail(request.email)) {
+      return AuthResponseHelper.error('Невірний формат email')
     }
 
     return this.handleNext(request)
+  }
+
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
   }
 }

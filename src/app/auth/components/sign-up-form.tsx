@@ -13,7 +13,8 @@ import Routes from '@/constants/routes'
 import useUserStore from '@/hooks/store/use-user-store'
 import { useToast } from '@/hooks/use-toast'
 import { DefaultFormFieldFactory } from '@/patterns/abstract-factory/form-field-factory'
-import { AuthChain } from '@/patterns/chain-of-responsibility/auth-chain'
+import { RegistrationHandler } from '@/patterns/chain-of-responsibility/handlers/registration-handler'
+import { RegistrationValidationHandler } from '@/patterns/chain-of-responsibility/handlers/registration-validation-handler'
 
 const SignUpForm = () => {
   const router = useRouter()
@@ -35,8 +36,10 @@ const SignUpForm = () => {
   const passwordField = formFieldFactory.createPasswordField()
 
   const handleRegister = async (data: RegisterFormValues) => {
-    const authChain = new AuthChain(true)
-    const response = await authChain.process(data)
+    const handler = new RegistrationValidationHandler().setNext(
+      new RegistrationHandler(),
+    )
+    const response = await handler.handle(data)
 
     if (response.success && response.user) {
       setUser(response.user)

@@ -1,5 +1,6 @@
 import { BaseApi } from './base-api'
 
+import { AUTH_ERROR_MESSAGES } from '@/constants/error-messages'
 import type { ApiResponse } from '@/lib/http-client'
 import type { User } from '@/types/user'
 
@@ -13,9 +14,13 @@ class AuthAPI extends BaseApi<AuthAPI> {
     email: string,
     password: string,
   ): Promise<ApiResponse<User>> {
-    return await this.client.post<User>('/auth/signup', {
+    const response = await this.client.post<User>('/auth/signup', {
       body: { username, email, password },
     })
+
+    if (response.status === 201) return response
+
+    throw new Error(AUTH_ERROR_MESSAGES.REGISTRATION_FAILED)
   }
 
   async login(
